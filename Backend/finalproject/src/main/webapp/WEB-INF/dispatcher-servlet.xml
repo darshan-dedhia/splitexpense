@@ -19,7 +19,13 @@
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
 
-    <context:component-scan base-package="edu.darshandedhia.controller" />
+    <context:component-scan base-package="edu.darshandedhia.info6250.controller" />
     <mvc:annotation-driven />
+    
+    <!-- Dao Class Beans Declaration -->
+    <bean id="userDao" class="edu.darshandedhia.info6250.dao.UserDao" />
+    
+    <!-- Service Class Beans Declaration -->
+    <bean id="userService" class="edu.darshandedhia.info6250.service.UserService"/>
     
 </beans>
