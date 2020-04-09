@@ -7,7 +7,13 @@ public class MultiResponse {
 	
 	private int statusCode;
 	private String status;
-	private List<String> messages = new ArrayList<String>();
+	private List<String> messages = new ArrayList<>();
+	
+	public MultiResponse(int statusCode, String status, List<String> messages) {
+		this.statusCode = statusCode;
+		this.status = status;
+		this.messages = messages;
+	}
 	
 	public int getStatusCode() {
 		return statusCode;

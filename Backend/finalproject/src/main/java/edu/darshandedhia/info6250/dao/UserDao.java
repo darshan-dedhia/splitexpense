@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import edu.darshandedhia.info6250.exception.UserException;
@@ -20,6 +22,10 @@ public class UserDao extends DAO{
 		try {
 		begin();
 		userExist(user); //Check for user Exist. If user exists then it will throw UserException
+		//BCrypt Password Hashing
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		String bcryptPassword = bcrypt.encode(user.getPassword());
+		user.setPassword(bcryptPassword);
 		fetchSession().save(user);
 		commit();
 		return new Response(StatusCode.created, Status.success, Message.userCreated);
@@ -27,11 +33,14 @@ public class UserDao extends DAO{
 			return new Response(StatusCode.badRequest, Status.failure, e.getMessage());
 		} catch (HibernateException he) {
 			return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError);
+		} catch (Exception ex) {
+			return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError);
 		} finally {
 			close();
 		}
 	}
 	
+	// userExist method checks user with provided Username or email ID Exist?
 	public boolean userExist(User user) throws UserException{
 		List<User> users;
 		//Username check
@@ -48,5 +57,18 @@ public class UserDao extends DAO{
 		
 		return false;
 	}
-
+	
+	public User getUserByUsername(String username) throws UserException{
+		try {
+		begin();
+		Query q = fetchSession().createQuery("from User where userName =: username");
+		q.setParameter("username", username);
+		List<User> users = q.list();
+		if (users.size() == 0) throw new UserException("No user exists with username: " + username);
+		if (users.size() > 1) throw new UserException("Multiple users exist with username: " + username);
+		return users.get(0);
+		} finally {
+			close();
+		}
+	}
 }

@@ -11,4 +11,8 @@ public class StatusCode {
 	public static final int conflict = 409;
 	public static final int internalServerError = 500;
 	public static final int serviceUnavailable = 503;
+	public static final int inappropriateInputFormat = 600;
+	public static final int loginPasswordMismatch = 601;
+	public static final int usernameNotExist = 602;
+	
 }
