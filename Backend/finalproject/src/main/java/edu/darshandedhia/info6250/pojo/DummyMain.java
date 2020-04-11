@@ -39,6 +39,8 @@ public class DummyMain {
 			 
 			
 			
+			
+			
 			/*
 			 * User user01 = session.get(User.class, 1); User user02 =
 			 * session.get(User.class,2); User user03 = session.get(User.class, 3);
@@ -57,6 +59,9 @@ public class DummyMain {
 			 * 
 			 * session.getTransaction().commit();
 			 */
+			 
+			
+			
 			
 			/*
 			 * User user01 = session.get(User.class, 1); User user02 =
@@ -64,20 +69,22 @@ public class DummyMain {
 			 * 
 			 * for(User user : user01.getFriends()) {
 			 * System.out.println("Friends of User 1: ");
-			 * System.out.println(user.getName()); }
+			 * System.out.println(user.getUserName()); }
 			 * 
 			 * for(User user : user01.getFriendsOf()) {
 			 * System.out.println("User 1 is friend of: ");
-			 * System.out.println(user.getName()); }
+			 * System.out.println(user.getUserName()); }
 			 * 
 			 * for(User user : user02.getFriends()) {
 			 * System.out.println("Friends of User 2: ");
-			 * System.out.println(user.getName()); }
+			 * System.out.println(user.getUserName()); }
 			 * 
 			 * for(User user : user02.getFriendsOf()) {
 			 * System.out.println("User 2 is friend of: ");
-			 * System.out.println(user.getName()); }
+			 * System.out.println(user.getUserName()); }
 			 */
+			 
+			
 			
 			/*
 			 * User user01 = session.get(User.class, 1); User user02 =
@@ -98,30 +105,29 @@ public class DummyMain {
 			 * transaction.getTransactionDetails().add(td1);
 			 * 
 			 * session.save(td1); session.save(td2); session.save(transaction);
+			 * session.getTransaction().commit();
 			 */
+			 
 
-			User user01 = session.get(User.class, 1);
-			User user02 = session.get(User.class, 2);
-			
-			Group group = new Group();
-			group.setGroupName("Flatmates");
-			group.getUserList().add(user01);
-			group.getUserList().add(user02);
-			
-			session.save(group);
-			session.getTransaction().commit();
-			
-			User user001 = session.get(User.class, 1);
-			User user002 = session.get(User.class, 2);
-			
-			for(Group group001 : user001.getGroupList()) {
-				System.out.println(group001.getGroupId() + "  " + group001.getGroupName());
-			}
-			
-			for(Group group002 : user002.getGroupList()) {
-				System.out.println(group002.getGroupId() + "  " + group002.getGroupName());
-			}
-			
+			/*
+			 * User user01 = session.get(User.class, 1); User user02 =
+			 * session.get(User.class, 2);
+			 * 
+			 * Group group = new Group(); group.setGroupName("Flatmates");
+			 * group.getUserList().add(user01); group.getUserList().add(user02);
+			 * 
+			 * session.save(group); session.getTransaction().commit();
+			 * 
+			 * User user001 = session.get(User.class, 1); User user002 =
+			 * session.get(User.class, 2);
+			 * 
+			 * for(Group group001 : user001.getGroupList()) {
+			 * System.out.println(group001.getGroupId() + "  " + group001.getGroupName()); }
+			 * 
+			 * for(Group group002 : user002.getGroupList()) {
+			 * System.out.println(group002.getGroupId() + "  " + group002.getGroupName()); }
+			 * 
+			 */
 			
 		} catch (HibernateException he) {
 			System.out.println(he);

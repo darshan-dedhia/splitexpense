@@ -1,5 +1,6 @@
 package edu.darshandedhia.info6250.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TRANSACTIONS")
-public class Transaction {
+public class Transaction implements Serializable{
 	@Id
 	@Column(name = "TRANSACTION_ID")
 	private int transactionId;

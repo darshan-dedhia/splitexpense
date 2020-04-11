@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-deep-purple, 600, 500, 900);
+$accent: mat-palette($mat-amber, A400, A300, A600);
+
+mat-form-field.text-size {
+  font-size: 13px;
+}
+
+span.se-form-side-pad{
+  padding-right: 1rem;
+}
+
+.navbar{
+  justify-content: space-between;
+}
+
+.background{
+  background-color: #F9F9FB;
+}

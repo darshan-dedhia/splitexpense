@@ -4,6 +4,7 @@ import static edu.darshandedhia.info6250.dao.DAO.fetchSession;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
@@ -66,9 +67,21 @@ public class UserDao extends DAO{
 		List<User> users = q.list();
 		if (users.size() == 0) throw new UserException("No user exists with username: " + username);
 		if (users.size() > 1) throw new UserException("Multiple users exist with username: " + username);
+		Hibernate.initialize(users.get(0).getFriends());
+		Hibernate.initialize(users.get(0).getFriendsOf());
+		Hibernate.initialize(users.get(0).getGroupList());
 		return users.get(0);
 		} finally {
 			close();
 		}
+	}
+	
+	public User updateUser(User user) {
+		begin();
+		fetchSession().update(user);
+		fetchSession().getTransaction().commit();
+		User userr = fetchSession().get(User.class, user.getUserId());
+		close();
+		return userr;
 	}
 }

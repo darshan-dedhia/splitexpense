@@ -1,0 +1,77 @@
+<div class="background">
+<!--NavBar starts here-->
+<mat-toolbar color="primary" class="navbar">
+  <div>SplitExpense</div>
+<!-- Login form code -->
+  <div >
+    <form (ngSubmit)="login()">
+    <span class="se-form-side-pad">
+    <mat-form-field class="text-size">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" name="userName" id="userName" [(ngModel)]="loginUser.userName">
+    </mat-form-field>
+    </span>
+    <span class="se-form-side-pad">
+    <mat-form-field class="text-size">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="passwordHide ? 'password' : 'text'" name="password" id="password" [(ngModel)]="loginUser.password">
+      <button type="button" mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
+        <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    </span>
+    <span>
+      <button mat-raised-button type="submit">Login</button>
+    </span>
+    </form>
+  </div>
+</mat-toolbar>
+<!--NavBar Finishes here-->
+<div class="background">
+  <h4 class="mat-display-1">Less Stress when sharing expenses</h4>
+<mat-grid-list cols="3">
+  <mat-grid-tile [colspan]="2">
+    <img src="assets/images/1743.jpg" height="450" width="1150">
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1">
+    <div>
+      <form (ngSubmit)="addUser()">
+        <!--    Username Field    -->
+        <span class="se-form-side-pad">
+          <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput type="text" name="signup-userName" id="signup-userName" [(ngModel)]="signUpUser.userName">
+          </mat-form-field>
+        </span>
+        <br>
+        <!--    Password Field    -->
+        <span class="se-form-side-pad">
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="signup-password" id="signup-password" [(ngModel)]="signUpUser.password">
+          </mat-form-field>
+        </span>
+        <br>
+        <!--    Name Field    -->
+        <span class="se-form-side-pad">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput type="text" name="signup-name" id="signup-name" [(ngModel)]="signUpUser.name">
+          </mat-form-field>
+        </span>
+        <br>
+        <!--    Email Field    -->
+        <span class="se-form-side-pad">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" name="signup-email" id="signup-email" [(ngModel)]="signUpUser.email">
+          </mat-form-field>
+        </span>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Register! Its Free..</button>
+      </form>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+</div>
+</div>

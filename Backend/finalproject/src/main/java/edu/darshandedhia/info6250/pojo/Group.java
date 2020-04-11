@@ -1,11 +1,13 @@
 package edu.darshandedhia.info6250.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "GROUP_DETAILS")
-public class Group {
+public class Group implements Serializable{
 	
 	@Id @Column(name="GROUP_ID")
 	private int groupId;

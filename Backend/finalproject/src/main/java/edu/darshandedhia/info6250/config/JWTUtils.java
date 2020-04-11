@@ -27,27 +27,43 @@ public class JWTUtils implements Serializable{
 	}
 	
 	public String generateJWTToken(String id, String issuer, String subject, int minutes) {
-		SignatureAlgorithm signatureAlgo = SignatureAlgorithm.HS256;
-		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(secretKey);
-		Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgo.getJcaName());
 		
-		JwtBuilder builder = Jwts.builder().setId(id)
-										   .setIssuedAt(new Date())
-										   .setSubject(subject)
-										   .setClaims(new HashMap<String, Object>())
-										   .setIssuer(issuer)
-										   .setExpiration(new Date(System.currentTimeMillis() + (minutes * oneMinuteInMilliSeconds)))
-										   .signWith(signatureAlgo, secretKey.getBytes());
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+	    long nowMillis = System.currentTimeMillis();
+	    Date now = new Date(nowMillis);
+	    long ttlMillis = minutes * 60000;
+
+	    byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(this.secretKey);
+	    Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+	    JwtBuilder builder = Jwts.builder().setId(id)
+	                                .setIssuedAt(now)
+	                                .setSubject(subject)
+	                                .setIssuer(issuer)
+	                                .signWith(signatureAlgorithm, signingKey);
+
+	   
+	    if (ttlMillis >= 0) {
+	    long expMillis = nowMillis + ttlMillis;
+	        Date exp = new Date(expMillis);
+	        builder.setExpiration(exp);
+	    }
+	    
+	    return builder.compact();
 		
-		return builder.compact();
 	}
 	
 	public Claims verifyJWTToken(String token) {
-		System.out.println("Token Verification started");
-		 Claims claims = Jwts.parser().setSigningKey(secretKey.getBytes())
-									 .parseClaimsJwt(token)
-									 .getBody();
-		 System.out.println(claims.getId());
-		return claims;
+		 //This line will throw an exception if it is not a signed JWS (as expected)
+	    Claims claims = Jwts.parser()         
+	       .setSigningKey(DatatypeConverter.parseBase64Binary(this.secretKey))
+	       .parseClaimsJws(token).getBody();
+		/*
+		 * System.out.println("ID: " + claims.getId()); System.out.println("Subject: " +
+		 * claims.getSubject()); System.out.println("Issuer: " + claims.getIssuer());
+		 * System.out.println("Expiration: " + claims.getExpiration());
+		 */
+	    return claims;
 	}
 }

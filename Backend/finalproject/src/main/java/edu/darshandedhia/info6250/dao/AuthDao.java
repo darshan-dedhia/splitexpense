@@ -40,10 +40,11 @@ public class AuthDao extends DAO{
 			
 		} catch(UserException ue) {
 			return new Response(StatusCode.badRequest, Status.failure, ue.getMessage());
-		} catch(Exception e){
-			System.out.println(e);
-			return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError);
+		} catch(Exception e){ 
+			System.out.println(e); 
+			return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError); 
 		}
+			 
 	}
 		
 }

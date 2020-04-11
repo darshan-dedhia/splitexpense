@@ -37,20 +37,21 @@ public class JWTTokenFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String token = request.getHeader(Authorization).replace(PREFIX, "");
-		System.out.println(token);
+		String token = request.getHeader(this.Authorization);
 		try {
 		if (token == null || token.equals("")) throw new MalformedJwtException("Token not found or null or blank");
+		//*****  Fix String issue here using String builder (Strings are immutable and will be stored in memory causing memory leaks)
+		//*****  Also token.replace is done below because if token is null it will cause exception. Hence first token null check
+		token = token.replace(this.PREFIX, "");  
 		JWTUtils utl = new JWTUtils();
 		Claims claims = utl.verifyJWTToken(token);
+		request.setAttribute("userName", claims.getId().toString());
+		request.setAttribute("friend", "darshan.dedhia93_5");
 		filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
-			System.out.println("In here: " + e.getMessage());
-			System.out.println(e);
 			writeErrorResponse(response);
 		} catch (Exception e) {
-			System.out.println("In here 2: " + e.getMessage());
-			System.out.println(e);
+			e.printStackTrace();
 			writeErrorResponse(response);
 		}
 	}

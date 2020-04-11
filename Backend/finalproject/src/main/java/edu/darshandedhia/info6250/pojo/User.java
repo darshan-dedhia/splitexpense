@@ -1,10 +1,12 @@
 package edu.darshandedhia.info6250.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 			   @UniqueConstraint(columnNames = "EMAIL", name = "UK_EMAIL"),
 			   @UniqueConstraint(columnNames = "USER_NAME", name = "UK_USERNAME")
 	   })
-public class User {
+public class User implements Serializable{
 	
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "USER_ID")

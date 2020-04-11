@@ -18,6 +18,7 @@ public class AuthController {
 	@Qualifier(value="authService")
 	private AuthService authService;
 	
+	
 	@RequestMapping(value = "/login", produces = "application/json", method=RequestMethod.POST)
 	public ResponseEntity<Object> authenticate(@RequestBody User user){
 		return authService.authenticate(user);

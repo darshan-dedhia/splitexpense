@@ -1,9 +1,12 @@
 
 package edu.darshandedhia.info6250.pojo;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +22,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 @Table(name = "TRANSACTION_DETAILS")
-public class TransactionDetails {
+public class TransactionDetails implements Serializable{
 	
 	@Id
 	@GenericGenerator(
@@ -42,7 +45,7 @@ public class TransactionDetails {
 	@Column(name = "OWN_SHARE")
 	private double ownShare;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="TRANSACTION_ID")
 	private Transaction transaction;
 
