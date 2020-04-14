@@ -7,15 +7,19 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "TRANSACTIONS")
 public class Transaction implements Serializable{
-	@Id
+	@Id @GeneratedValue
 	@Column(name = "TRANSACTION_ID")
 	private int transactionId;
 	@Column(name = "PAYMENT_IND_GRP_ID")
@@ -25,7 +29,8 @@ public class Transaction implements Serializable{
 	@Column(name = "CATEGORY")
 	private String Category;
 	
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "transaction")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction", fetch = FetchType.EAGER)
+	@JsonManagedReference
 	private List<TransactionDetails> transactionDetails = new ArrayList<TransactionDetails>();
 
 	public int getTransactionId() {

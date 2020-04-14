@@ -3,7 +3,9 @@ package edu.darshandedhia.info6250.pojo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 @Table(name = "USER",
@@ -33,6 +41,7 @@ public class User implements Serializable{
 	private String userName;
 	
 	@Column(name = "PASSWORD", nullable = false)
+	@JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
 	@Column(name = "NAME", nullable = false)
@@ -41,18 +50,18 @@ public class User implements Serializable{
 	@Column(name = "EMAIL", nullable = false)
 	private String email;
 	
-	@ManyToMany
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="USER_FRIENDS", 
 	joinColumns=@JoinColumn(name="USER_ID"),
 	inverseJoinColumns = @JoinColumn(name="FRIEND_ID"))
 	private Collection<User> friends = new ArrayList<User>();
 	
-	@ManyToMany
-	@JoinTable(name="USER_FRIENDS",
-	joinColumns=@JoinColumn(name="FRIEND_ID"),
-	inverseJoinColumns=@JoinColumn(name="USER_ID"))
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "friends")
 	private Collection<User> friendsOf = new ArrayList<User>();
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "userList")
 	private Collection<Group> groupList = new ArrayList<Group>();
 	
@@ -104,5 +113,23 @@ public class User implements Serializable{
 	public void setUserList(Collection<Group> groupList) {
 		this.groupList = groupList;
 	}
-	
+	 @Override
+    public int hashCode() {
+        return Objects.hash(userName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        User other = (User) obj;
+        return Objects.equals(userName, other.getUserName());
+    }
 }

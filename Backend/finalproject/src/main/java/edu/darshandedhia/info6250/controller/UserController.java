@@ -52,6 +52,8 @@ public class UserController {
 			User user = userDao.getUserByUsername(request.getAttribute("userName").toString());
 			User friend = userDao.getUserByUsername(request.getAttribute("friend").toString());
 			user.getFriends().add(friend);
+			
+			user = userDao.getUserByUsername("darshan.dedhia93_2");
 			return new ResponseEntity<Object>(user, HttpStatus.OK);
 		} catch (UserException e) {
 			// TODO Auto-generated catch block

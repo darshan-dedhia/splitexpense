@@ -1,9 +1,14 @@
 package edu.darshandedhia.info6250.pojo;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 public class DummyMain {
 
@@ -86,29 +91,31 @@ public class DummyMain {
 			 
 			
 			
+			
 			/*
 			 * User user01 = session.get(User.class, 1); User user02 =
 			 * session.get(User.class, 2);
 			 * 
 			 * Transaction transaction = new Transaction();
-			 * transaction.setCategory("Grocery");
-			 * transaction.setDescription("Bill for Target 04/06/2020");
+			 * transaction.setCategory("Grocery2");
+			 * transaction.setDescription("Bill for Target 04/14/2020");
 			 * transaction.setPaymentIndividualOrGroupId(0);
 			 * 
 			 * TransactionDetails td1 = new TransactionDetails(); td1.setUser(user01);
-			 * td1.setTransaction(transaction); td1.setOwnShare(50); td1.setPaid(100);
+			 * td1.setTransaction(transaction); td1.setOwnShare(50); td1.setPaid(75);
 			 * 
 			 * TransactionDetails td2 = new TransactionDetails(); td2.setUser(user02);
-			 * td2.setTransaction(transaction); td2.setOwnShare(50); td2.setPaid(0);
+			 * td2.setTransaction(transaction); td2.setOwnShare(50); td2.setPaid(25);
 			 * 
 			 * transaction.getTransactionDetails().add(td2);
-			 * transaction.getTransactionDetails().add(td1);
-			 * 
-			 * session.save(td1); session.save(td2); session.save(transaction);
+			 * transaction.getTransactionDetails().add(td1); session.persist(transaction);
+			 * //session.save(td1); session.save(td2); session.save(transaction);
 			 * session.getTransaction().commit();
 			 */
 			 
+			 
 
+			
 			/*
 			 * User user01 = session.get(User.class, 1); User user02 =
 			 * session.get(User.class, 2);
@@ -126,8 +133,17 @@ public class DummyMain {
 			 * 
 			 * for(Group group002 : user002.getGroupList()) {
 			 * System.out.println(group002.getGroupId() + "  " + group002.getGroupName()); }
-			 * 
 			 */
+			  
+			//Query q = session.createQuery("from Transaction as t, TransactionDetails as td1, TransactionDetails as td2 where td1.transaction = td2.transaction and td1.transaction = t.transactionId and td1.user =: userId1 and td2.user =: userId2 ");
+			String sqlQuery = "select * from transactions t, transaction_details td1, transaction_details td2 where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID = :userId1 and td2.USER_ID = :userId2";
+			NativeQuery<Transaction> q = session.createNativeQuery(sqlQuery, Transaction.class);
+			q.setParameter("userId1", 1);
+			q.setParameter("userId2", 2);
+			List<Transaction> transaction = q.list();
+			System.out.println(transaction.size());
+			System.out.println(transaction.get(0).getTransactionDetails().size());
+			 
 			
 		} catch (HibernateException he) {
 			System.out.println(he);

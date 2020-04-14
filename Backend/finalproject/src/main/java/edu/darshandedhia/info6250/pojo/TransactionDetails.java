@@ -19,6 +19,8 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.UniqueElements;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "TRANSACTION_DETAILS")
@@ -37,7 +39,7 @@ public class TransactionDetails implements Serializable{
 	@Column(name="TD_ID")
 	@GeneratedValue(generator = "sequence")
 	private int id;
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	@Column(name = "PAID")
@@ -45,8 +47,9 @@ public class TransactionDetails implements Serializable{
 	@Column(name = "OWN_SHARE")
 	private double ownShare;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="TRANSACTION_ID")
+	@JsonBackReference
 	private Transaction transaction;
 
 	

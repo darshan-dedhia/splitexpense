@@ -14,6 +14,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "GROUP_DETAILS")
 public class Group implements Serializable{
@@ -24,7 +28,8 @@ public class Group implements Serializable{
 	@Column(name="GROUP_NAME")
 	private String groupName;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="GROUP_USER_DETAILS", 
 	joinColumns=@JoinColumn(name="GROUP_ID"),
 	inverseJoinColumns = @JoinColumn(name="USER_ID"))

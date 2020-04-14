@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import edu.darshandedhia.info6250.exception.UserException;
+import edu.darshandedhia.info6250.pojo.Group;
 import edu.darshandedhia.info6250.pojo.User;
 import edu.darshandedhia.info6250.response.Response;
 import edu.darshandedhia.info6250.constants.*;
@@ -64,15 +65,31 @@ public class UserDao extends DAO{
 		begin();
 		Query q = fetchSession().createQuery("from User where userName =: username");
 		q.setParameter("username", username);
-		List<User> users = q.list();
-		if (users.size() == 0) throw new UserException("No user exists with username: " + username);
-		if (users.size() > 1) throw new UserException("Multiple users exist with username: " + username);
-		Hibernate.initialize(users.get(0).getFriends());
-		Hibernate.initialize(users.get(0).getFriendsOf());
-		Hibernate.initialize(users.get(0).getGroupList());
-		return users.get(0);
+		List<User> user = q.list();
+		if (user.size() == 0) throw new UserException("No user exists with username: " + username);
+		if (user.size() > 1) throw new UserException("Multiple users exist with username: " + username);
+		User users = user.get(0);
+		Hibernate.initialize(users.getFriends());
+		Hibernate.initialize(users.getFriendsOf());
+		Hibernate.initialize(users.getGroupList());
+		return users;
+		} catch (UserException ue) {
+			throw ue;
 		} finally {
 			close();
+		}
+	}
+	
+	public User getUserByUserId(int userId) throws UserException, Exception {
+		try {
+			begin();
+			User user = fetchSession().get(User.class, userId);
+			if (user == null) throw new UserException(Message.userByUserIdNotFound);
+			return user;
+		} catch (UserException ue) {
+			throw ue;
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 	

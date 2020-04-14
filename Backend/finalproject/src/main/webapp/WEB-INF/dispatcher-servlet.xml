@@ -25,11 +25,12 @@
     <!-- Dao Class Beans Declaration -->
     <bean id="userDao" class="edu.darshandedhia.info6250.dao.UserDao" />
     <bean id="authDao" class="edu.darshandedhia.info6250.dao.AuthDao" />
+    <bean id="transactionsDao" class="edu.darshandedhia.info6250.dao.TransactionsDao" />
     
     <!-- Service Class Beans Declaration -->
     <bean id="userService" class="edu.darshandedhia.info6250.service.UserService"/>
     <bean id="authService" class="edu.darshandedhia.info6250.service.AuthService"/>
-    
+    <bean id="transactionService" class="edu.darshandedhia.info6250.service.TransactionService"/>
     <!-- Validator Class Beans Declaration -->
     <bean id="userValidator" class="edu.darshandedhia.info6250.validator.UserValidator"/>
     
