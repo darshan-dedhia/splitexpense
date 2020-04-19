@@ -46,7 +46,17 @@ public class TransactionController {
 	
 	@RequestMapping(value = "/addTransaction", produces = "application/json", method=RequestMethod.POST)
 	public ResponseEntity<Object> addTransaction(@RequestBody Transaction transaction){
-		System.out.println("In here");
 		return transactionService.addTransaction(transaction);
 	}
+	
+	@RequestMapping(value = "/deleteTransaction/{transactionId}", produces = "application/json", method=RequestMethod.POST)
+	public ResponseEntity<Object> deleteTransaction(@PathVariable("transactionId") String transactionId){
+		return transactionService.deleteTransaction(transactionId);
+	}
+	
+	@RequestMapping(value = "/groups/{groupId}", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> fetchGroupTransactions(@PathVariable("groupId") String groupId){
+		return transactionService.fetchGroupTransactions(groupId);
+	}
+	
 }

@@ -77,9 +77,11 @@ export class AddModifyTransactionsComponent implements OnInit {
     const result = this.validatePayment();
     if (result === 'SUCCESS') {
       this.transactionService.addTransaction(this.selTransactions.getTransaction()).subscribe(data => {
-        if (data['statusCode'] === 200){
+        if (data['statusCode'] === 200) {
           let transaction = data['object'];
-          this.selTransactions.getTransactionList().push(transaction);
+          if (this.selTransactions.getOperation() === 'ADD') {
+            this.selTransactions.getTransactionList().push(transaction);
+          }
           this.snackbar.open('Transaction save successfully', 'Dismiss', {duration: 2000});
           this.selTransactions.setSelectedTransaction(new Transaction());
           this.closeDialog(true);
@@ -119,6 +121,12 @@ export class AddModifyTransactionsComponent implements OnInit {
 
   closeDialog(result) {
     this.dialogRef.close(result);
+  }
+
+  cancel(event: MouseEvent) {
+    event.stopImmediatePropagation();
+    this.selTransactions.replaceBackUpTransaction();
+    this.closeDialog('CANCEL');
   }
 
 }

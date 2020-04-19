@@ -12,4 +12,5 @@ public class Message {
 	public static final String userByUserIdNotFound = "Requested user for user ID not found";
 	public static final String databaseExceptionOccured = "Exception occured while performing operation on database";
 	public static final String internalServerError = "Internal server error occured";
+	public static final String recordDeletedSuccessfully = "Record delted successfully";
 }

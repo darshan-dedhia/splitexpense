@@ -2,14 +2,9 @@
 <h1 class="mat-display-1 side-title">Groups:</h1>
 <div *ngFor="let group of groupList">
   <a class="mat-display-1 tree-data" routerLink="groups/{{group.groupId}}">{{group.groupName}}</a><br>
-  <a class="mat-display-1 tree-data" routerLink="groups/{{group.groupId -1}}">{{group.groupName}}</a><br>
-  <a class="mat-display-1 tree-data" routerLink="groups/{{group.groupId - 2}}">{{group.groupName}}</a><br>
 </div>
 <br>
 <h1 class="mat-display-1 side-title">Friends:</h1>
 <div *ngFor="let friend of friendsList">
   <a class="mat-display-1 tree-data" routerLink="friends/{{friend.userId}}">{{friend.name}}</a><br>
-  <a class="mat-display-1 tree-data" routerLink="friends/{{friend.userId - 1}}">{{friend.name}}</a><br>
-  <a class="mat-display-1 tree-data" routerLink="friends/{{friend.userId - 2}}">{{friend.name}}</a><br>
-
 </div>

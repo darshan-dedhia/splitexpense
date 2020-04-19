@@ -46,24 +46,34 @@ public class DummyMain {
 			
 			
 			
+			
 			/*
-			 * User user01 = session.get(User.class, 1); User user02 =
-			 * session.get(User.class,2); User user03 = session.get(User.class, 3);
+			 * User user01 = session.get(User.class, 9); User user02 =
+			 * session.get(User.class, 8); User user03 = session.get(User.class, 7); User
+			 * user04 = session.get(User.class, 6); User user05 = session.get(User.class,
+			 * 5);
 			 * 
-			 * user01.getFriends().add(user02);
+			 * user01.getFriends().add(user02); user01.getFriends().add(user03);
+			 * user01.getFriends().add(user04); user01.getFriends().add(user05);
 			 * 
+			 * user02.getFriends().add(user01); user02.getFriends().add(user03);
+			 * user02.getFriends().add(user04); user02.getFriends().add(user05);
 			 * 
-			 * user02.getFriends().add(user03);
+			 * user03.getFriends().add(user01); user03.getFriends().add(user02);
+			 * user03.getFriends().add(user04); user03.getFriends().add(user05);
 			 * 
+			 * user04.getFriends().add(user01); user04.getFriends().add(user02);
+			 * user04.getFriends().add(user03); user04.getFriends().add(user05);
 			 * 
-			 * user03.getFriends().add(user02);
+			 * user05.getFriends().add(user01); user05.getFriends().add(user02);
+			 * user05.getFriends().add(user04); user05.getFriends().add(user03);
 			 * 
-			 * 
-			 * session.update(user01); session.update(user03); session.update(user02);
+			 * session.update(user01); session.update(user02);
+			 * session.update(user03);session.update(user04); session.update(user05);
 			 * 
 			 * 
 			 * session.getTransaction().commit();
-			 */
+			 */ 
 			 
 			
 			
@@ -116,33 +126,33 @@ public class DummyMain {
 			 
 
 			
+			
 			/*
-			 * User user01 = session.get(User.class, 1); User user02 =
-			 * session.get(User.class, 2);
+			 * User user01 = session.get(User.class, 5); User user02 =
+			 * session.get(User.class, 6); User user03 = session.get(User.class, 7); User
+			 * user04 = session.get(User.class, 8); User user05 = session.get(User.class,
+			 * 9);
 			 * 
-			 * Group group = new Group(); group.setGroupName("Flatmates");
+			 * Group group = new Group(); group.setGroupName("Flatmates NEU");
 			 * group.getUserList().add(user01); group.getUserList().add(user02);
+			 * group.getUserList().add(user03); group.getUserList().add(user04);
+			 * group.getUserList().add(user05);
 			 * 
 			 * session.save(group); session.getTransaction().commit();
 			 * 
-			 * User user001 = session.get(User.class, 1); User user002 =
-			 * session.get(User.class, 2);
-			 * 
-			 * for(Group group001 : user001.getGroupList()) {
-			 * System.out.println(group001.getGroupId() + "  " + group001.getGroupName()); }
-			 * 
-			 * for(Group group002 : user002.getGroupList()) {
-			 * System.out.println(group002.getGroupId() + "  " + group002.getGroupName()); }
 			 */
+			 
 			  
 			//Query q = session.createQuery("from Transaction as t, TransactionDetails as td1, TransactionDetails as td2 where td1.transaction = td2.transaction and td1.transaction = t.transactionId and td1.user =: userId1 and td2.user =: userId2 ");
-			String sqlQuery = "select * from transactions t, transaction_details td1, transaction_details td2 where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID = :userId1 and td2.USER_ID = :userId2";
-			NativeQuery<Transaction> q = session.createNativeQuery(sqlQuery, Transaction.class);
-			q.setParameter("userId1", 1);
-			q.setParameter("userId2", 2);
-			List<Transaction> transaction = q.list();
-			System.out.println(transaction.size());
-			System.out.println(transaction.get(0).getTransactionDetails().size());
+			/*
+			 * String sqlQuery =
+			 * "select * from transactions t, transaction_details td1, transaction_details td2 where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID = :userId1 and td2.USER_ID = :userId2"
+			 * ; NativeQuery<Transaction> q = session.createNativeQuery(sqlQuery,
+			 * Transaction.class); q.setParameter("userId1", 1); q.setParameter("userId2",
+			 * 2); List<Transaction> transaction = q.list();
+			 * System.out.println(transaction.size());
+			 * System.out.println(transaction.get(0).getTransactionDetails().size());
+			 */
 			 
 			
 		} catch (HibernateException he) {

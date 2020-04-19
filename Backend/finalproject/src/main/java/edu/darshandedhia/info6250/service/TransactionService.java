@@ -6,8 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import edu.darshandedhia.info6250.constants.Message;
+import edu.darshandedhia.info6250.constants.Status;
+import edu.darshandedhia.info6250.constants.StatusCode;
 import edu.darshandedhia.info6250.dao.TransactionsDao;
 import edu.darshandedhia.info6250.pojo.Transaction;
+import edu.darshandedhia.info6250.response.Response;
 
 @Component
 public class TransactionService {
@@ -22,5 +26,28 @@ public class TransactionService {
 	
 	public ResponseEntity<Object> addTransaction(Transaction transaction){
 		return new ResponseEntity<Object>(transactionsDao.addTransaction(transaction), HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Object> deleteTransaction(String strTransactionId){
+		try {
+			int transactionId = Integer.parseInt(strTransactionId);
+		return new ResponseEntity<Object>(transactionsDao.deleteTransaction(transactionId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
+		
+	}
+	
+	public ResponseEntity<Object> fetchGroupTransactions (String strGroupId){
+		try {
+			int groupId = Integer.parseInt(strGroupId);
+			return new ResponseEntity<Object>(transactionsDao.fetchGroupTransactions(groupId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
 	}
 }

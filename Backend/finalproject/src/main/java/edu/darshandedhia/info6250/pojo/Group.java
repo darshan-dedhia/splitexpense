@@ -8,10 +8,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "GROUP_DETAILS")
 public class Group implements Serializable{
 	
-	@Id @Column(name="GROUP_ID")
+	@SequenceGenerator(name = "groupIdSequence", sequenceName = "GROUP_ID_SEQ", initialValue = 1, allocationSize = 100)
+	@Id @Column(name="GROUP_ID") @GeneratedValue(generator = "groupIdSequence")
 	private int groupId;
 	
 	@Column(name="GROUP_NAME")

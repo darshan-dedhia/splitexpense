@@ -10,6 +10,8 @@ import {Transaction} from '../../classes/transaction';
 import {MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {AddModifyTransactionsComponent} from '../add-modify-transactions/add-modify-transactions.component';
 import {SelectedTransactionService} from '../../services/selected-transaction.service';
+import {YesNoDialogComponent} from '../../dialogComponent/yes-no-dialog/yes-no-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -29,7 +31,8 @@ export class FriendsComponent implements OnInit {
               private userService: UserServiceService,
               private transactionService: TransactionService,
               private selectedTransaction: SelectedTransactionService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar) {
       this.selectedTransaction.emptyTransactions();
   }
   private user: User;
@@ -50,6 +53,7 @@ export class FriendsComponent implements OnInit {
       console.log(this.user);
       this.transactionService.fetchFriendsTransaction(this.user.userId).subscribe(data => {
         if (data['statusCode'] === 200) {
+          console.log('Har bar print');
           this.selectedTransaction.loadTransactions(data['object']);
           this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
         } else {
@@ -71,7 +75,6 @@ export class FriendsComponent implements OnInit {
     const diaRef = this.dialog.open(AddModifyTransactionsComponent, {data: {title}, disableClose: true, autoFocus: true});
     diaRef.afterClosed().subscribe(result => {
         if (result === true) {
-          console.log(this.selectedTransaction.getTransactionList());
           this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
         }
     });
@@ -82,11 +85,32 @@ export class FriendsComponent implements OnInit {
     event.stopPropagation();
     this.selectedTransaction.setSelectedTransaction(transaction);
     const diaRef = this.dialog.open(AddModifyTransactionsComponent, {data: {title: 'Modify Transaction'}, disableClose: true, autoFocus: true});
+    diaRef.afterClosed().subscribe(result => {
+      this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
+    });
   }
 
   deleteTransaction(transaction: Transaction, event: MouseEvent) {
     console.log(transaction);
     event.stopPropagation();
+    const result = this.dialog.open(YesNoDialogComponent, {data: {title: 'Confirm Deletion', content: 'Are you sure you want to delete selected record'}});
+    result.afterClosed().subscribe(data => {
+      if (data === 'YES') {
+        this.transactionService.deleteTransaction(transaction).subscribe(data => {
+          if (data['statusCode'] === 200) {
+            this.selectedTransaction.removeTransaction(transaction);
+            this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
+            this.snackBar.open('Deletion Successfull', 'Dismiss', {duration: 2000});
+          } else {
+            this.snackBar.open('Error occured while Deletion', 'Dismiss', {duration: 3000});
+          }
+        }, error => {
+          this.snackBar.open('Remote Server Error', 'Dismiss', {duration: 3000});
+        });
+      } else {
+        this.snackBar.open('Deletion Aborted', 'Dismiss', {duration: 2000});
+      }
+    });
   }
 
 }

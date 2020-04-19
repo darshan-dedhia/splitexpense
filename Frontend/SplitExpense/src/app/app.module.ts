@@ -30,6 +30,7 @@ import {UserServiceService} from './services/user-service.service';
 import {SelectedTransactionService} from './services/selected-transaction.service';
 import { AbsolutePipe } from './pipes/absolute.pipe';
 import { YourSharePipe } from './pipes/your-share.pipe';
+import { YesNoDialogComponent } from './dialogComponent/yes-no-dialog/yes-no-dialog.component';
 
 
 
@@ -49,9 +50,10 @@ import { YourSharePipe } from './pipes/your-share.pipe';
     GroupsComponent,
     AddModifyTransactionsComponent,
     AbsolutePipe,
-    YourSharePipe
+    YourSharePipe,
+    YesNoDialogComponent
   ],
-  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent],
+  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent, YesNoDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
