@@ -35,5 +35,6 @@
   		<filter-name>tokenFilter</filter-name>
   		<url-pattern>/users/valUser</url-pattern>
   		<url-pattern>/users/addFriend</url-pattern>
+    	<url-pattern>/transactions/fetchFriendTransactions/*</url-pattern>
   	</filter-mapping>
 </web-app>

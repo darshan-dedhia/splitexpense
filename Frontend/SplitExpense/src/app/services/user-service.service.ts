@@ -48,4 +48,8 @@ export class UserServiceService {
     return this.friendsList;
   }
 
+  userLoggedIn() {
+    return !!this.token;
+  }
+
 }

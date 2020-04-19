@@ -2,6 +2,7 @@ package edu.darshandedhia.info6250.pojo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,10 +25,16 @@ public class Transaction implements Serializable{
 	private int transactionId;
 	@Column(name = "PAYMENT_IND_GRP_ID")
 	private int paymentIndividualOrGroupId;
-	@Column(name = "DESCRIPTION")
+	@Column(name = "DESCRIPTION", nullable = false)
 	private String description;
-	@Column(name = "CATEGORY")
+	@Column(name = "CATEGORY", nullable = false)
 	private String Category;
+	@Column(name = "TRANSACTION_DATE", nullable = false)
+	private Date transactionDate;
+	@Column(name = "TOTAL_AMOUNT", nullable = false)
+	private double totalAmount;
+	@Column(name = "SPLIT_METHOD", nullable = false)
+	private int splitMethod;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction", fetch = FetchType.EAGER)
 	@JsonManagedReference
@@ -72,5 +79,31 @@ public class Transaction implements Serializable{
 	public void setTransactionDetails(List<TransactionDetails> transactionDetails) {
 		this.transactionDetails = transactionDetails;
 	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public int getSplitMethod() {
+		return splitMethod;
+	}
+
+	public void setSplitMethod(int splitMethod) {
+		this.splitMethod = splitMethod;
+	}
+	
+	
 	
 }

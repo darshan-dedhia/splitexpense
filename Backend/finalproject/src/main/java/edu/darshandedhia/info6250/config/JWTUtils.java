@@ -22,8 +22,8 @@ public class JWTUtils implements Serializable{
 	private final static long oneMinuteInMilliSeconds = 60000;
 	private final static String secretKey = "cqRKvUJh72O20m2H01Tw";
 	
-	public String generateUserJWTToken(String userName) {
-		return generateJWTToken(userName, "tokenGenerator", "AuthToken", 120);
+	public String generateUserJWTToken(String userName, int userId) {
+		return generateJWTToken(userName, userId + "", "AuthToken", 120);
 	}
 	
 	public String generateJWTToken(String id, String issuer, String subject, int minutes) {

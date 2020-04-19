@@ -9,9 +9,10 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 export class GroupsComponent implements OnInit {
   private groupId: number;
   constructor(private activatedRoute: ActivatedRoute) { }
-  
+
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.groupId = 0; //Make new object here
       let id = parseInt(params.get('id'));
       this.groupId = id;
     });

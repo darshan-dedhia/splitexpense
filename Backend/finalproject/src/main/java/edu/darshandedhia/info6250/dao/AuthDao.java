@@ -44,7 +44,7 @@ public class AuthDao extends DAO{
 			if (bcrypt.matches(password, user.getPassword())) {
 				//If raw supplied password matches with already stored encoded password
 				JWTUtils utl = new JWTUtils();
-				String token = utl.generateUserJWTToken(userName);
+				String token = utl.generateUserJWTToken(userName, user.getUserId());
 				
 				return new LoginResponse(StatusCode.success, Status.success, Message.userLoggedIn, token, user, groupList, friendsList);
 			} else {

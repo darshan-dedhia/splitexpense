@@ -7,12 +7,13 @@ import { HomepageComponent } from './Components/homepage/homepage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Internal module imports
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 // Material UI Imports
 import {MaterialModule} from './Modules/material/material.module';
 import { MessageDialogComponent } from './dialogComponent/message-dialog/message-dialog.component';
+import { AddModifyTransactionsComponent } from './Components/add-modify-transactions/add-modify-transactions.component';
 
 // Service Imports
 import {LoginSignupService} from './services/login-signup.service';
@@ -21,6 +22,16 @@ import { SummaryComponent } from './Components/summary/summary.component';
 import { SideNavigationComponent } from './Components/side-navigation/side-navigation.component';
 import { FriendsComponent } from './Components/friends/friends.component';
 import { GroupsComponent } from './Components/groups/groups.component';
+import { TokenInterceptorService } from './services/token-interceptor.service';
+
+//Guard imports
+import {AuthGuardGuard} from './guards/auth-guard.guard';
+import {UserServiceService} from './services/user-service.service';
+import {SelectedTransactionService} from './services/selected-transaction.service';
+import { AbsolutePipe } from './pipes/absolute.pipe';
+import { YourSharePipe } from './pipes/your-share.pipe';
+
+
 
 
 
@@ -35,18 +46,31 @@ import { GroupsComponent } from './Components/groups/groups.component';
     SummaryComponent,
     SideNavigationComponent,
     FriendsComponent,
-    GroupsComponent
+    GroupsComponent,
+    AddModifyTransactionsComponent,
+    AbsolutePipe,
+    YourSharePipe
   ],
-  entryComponents: [MessageDialogComponent],
+  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [LoginSignupService],
+  providers: [LoginSignupService,
+              AuthGuardGuard,
+              UserServiceService,
+              SelectedTransactionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

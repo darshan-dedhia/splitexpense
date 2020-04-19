@@ -90,6 +90,8 @@ public class UserDao extends DAO{
 			throw ue;
 		} catch (Exception e) {
 			throw e;
+		} finally {
+			close();
 		}
 	}
 	

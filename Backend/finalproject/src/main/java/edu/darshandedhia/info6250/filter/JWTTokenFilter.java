@@ -45,8 +45,10 @@ public class JWTTokenFilter extends OncePerRequestFilter{
 		token = token.replace(this.PREFIX, "");  
 		JWTUtils utl = new JWTUtils();
 		Claims claims = utl.verifyJWTToken(token);
-		request.setAttribute("userName", claims.getId().toString());
-		request.setAttribute("friend", "darshan.dedhia93_1");  //Remove this later
+		
+		request.setAttribute("userName", claims.getId()); 
+		request.setAttribute("userId", claims.getIssuer());
+		
 		filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
 			writeErrorResponse(response);

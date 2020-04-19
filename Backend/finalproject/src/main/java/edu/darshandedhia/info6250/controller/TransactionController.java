@@ -1,5 +1,7 @@
 package edu.darshandedhia.info6250.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.darshandedhia.info6250.constants.Message;
 import edu.darshandedhia.info6250.constants.Status;
 import edu.darshandedhia.info6250.constants.StatusCode;
+import edu.darshandedhia.info6250.pojo.Transaction;
 import edu.darshandedhia.info6250.pojo.User;
 import edu.darshandedhia.info6250.response.Response;
 import edu.darshandedhia.info6250.service.TransactionService;
@@ -26,15 +29,24 @@ public class TransactionController {
 	private TransactionService transactionService;
 	
 	@RequestMapping(value = "/fetchFriendTransactions/{userId}", produces = "application/json", method=RequestMethod.GET)
-	public ResponseEntity<Object> fetchFriendTransactions(@PathVariable("userId") String userid){
+	public ResponseEntity<Object> fetchFriendTransactions(@PathVariable("userId") String userid, HttpServletRequest request){
+		int friendUserId;
 		int userId;
 		try {
-			userId = Integer.parseInt(userid);
+			friendUserId = Integer.parseInt(userid);
+			userId = Integer.parseInt((String) request.getAttribute("userId"));
 		} catch (NumberFormatException nfe) {
 			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest) ,HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			
 			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.malFormedApiUrlRequest) ,HttpStatus.BAD_REQUEST);
 		}
-		return transactionService.fetchFriendTransactions(userId);
+		return transactionService.fetchFriendTransactions(userId, friendUserId);
+	}
+	
+	@RequestMapping(value = "/addTransaction", produces = "application/json", method=RequestMethod.POST)
+	public ResponseEntity<Object> addTransaction(@RequestBody Transaction transaction){
+		System.out.println("In here");
+		return transactionService.addTransaction(transaction);
 	}
 }

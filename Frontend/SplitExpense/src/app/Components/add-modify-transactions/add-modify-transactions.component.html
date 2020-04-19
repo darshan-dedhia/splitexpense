@@ -1,0 +1,76 @@
+<form (ngSubmit)="formSubmit()">
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+    <div class="grid-container">
+      <div>
+        <mat-form-field>
+          <mat-label>Description:</mat-label>
+          <input matInput name="description" [(ngModel)]="this.selTransactions.getTransaction().description" placeholder="Description of payment" required >
+          <mat-error>Description is required</mat-error>
+        </mat-form-field><br>
+        <mat-form-field>
+          <mat-label>Category:</mat-label>
+          <input matInput name="category" [(ngModel)]="this.selTransactions.getTransaction().category"  required>
+          <mat-error>Category is required</mat-error>
+        </mat-form-field><br>
+        <mat-form-field>
+          <mat-label>Total Amount:</mat-label>
+          <input matInput type="number" name="amount" [(ngModel)]="this.selTransactions.getTransaction().totalAmount" (input)="inputTotalAmountChange($event)" required>
+        </mat-form-field><br>
+        <mat-form-field>
+          <mat-label>Transaction date:</mat-label>
+          <input name="transactionDate" [(ngModel)]="this.selTransactions.getTransaction().transactionDate" matInput [matDatepicker]="picker" [value]="this.selTransactions.getTransaction().transactionDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Transaction Date is required</mat-error>
+        </mat-form-field><br>
+
+      </div>
+
+      <div>
+
+        <div *ngFor="let td of this.selTransactions.getTransaction().transactionDetails;let index = index">
+          <mat-form-field>
+            <mat-label>{{td.user.name}} Paid:</mat-label>
+            <input matInput type="number" name= paid{{index}} [(ngModel)]="this.td.paid"  required >
+          </mat-form-field><br>
+        </div>
+
+      </div>
+
+      <div>
+        <mat-tab-group animationDuration="0ms" (selectedTabChange)="matTabChange($event)" [(selectedIndex)]="this.selTransactions.getTransaction().splitMethod">
+          <mat-tab label="Equally" class="tab-body">
+            <br><br>
+            <div *ngFor="let td of this.selTransactions.getTransaction().transactionDetails; let index = index">
+              <mat-checkbox name=equalChkBox{{index}} class="tab-content" [checked]="true" (change)="equalCheckBoxChange($event, td)">{{td.user.name}}</mat-checkbox><br>
+            </div>
+
+          </mat-tab >
+          <mat-tab label="Percentage">
+            <br>
+            <div *ngFor="let td of this.selTransactions.getTransaction().transactionDetails; let index = index">
+              <mat-form-field style="size: 1000px">
+                <mat-label>{{td.user.name}}'s Percent:</mat-label>
+                <input type="number" matInput name=percent{{index}} class="percent-text-field" [(ngModel)]="td.percentage" (input)="inputPercentChange($event)">
+              </mat-form-field>
+            </div>
+          </mat-tab>
+          <mat-tab label="Amount">
+            <br>
+            <div *ngFor="let td of this.selTransactions.getTransaction().transactionDetails; let index = index">
+              <mat-form-field>
+                <mat-label>{{td.user.name}}'s Share:</mat-label>
+                <input type="number" max="100" min="0" matInput name=ownshare{{index}} class="percent-text-field" [(ngModel)]="td.ownShare" placeholder="0-100%" pattern="^$|^([0-9]|[1-9][0-9]|[1][0][0])?" >
+              </mat-form-field>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button type="submit" color="primary">SUBMIT</button>
+</mat-dialog-actions>
+</form>

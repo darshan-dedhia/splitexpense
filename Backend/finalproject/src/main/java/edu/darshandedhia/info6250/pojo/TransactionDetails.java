@@ -40,12 +40,14 @@ public class TransactionDetails implements Serializable{
 	@GeneratedValue(generator = "sequence")
 	private int id;
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "USER_ID")
+	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;
-	@Column(name = "PAID")
+	@Column(name = "PAID", nullable = false)
 	private double paid;
-	@Column(name = "OWN_SHARE")
+	@Column(name = "OWN_SHARE", nullable = false)
 	private double ownShare;
+	@Column(name = "SPLIT_PCT", nullable = false)
+	private double percentage;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="TRANSACTION_ID")
@@ -91,6 +93,14 @@ public class TransactionDetails implements Serializable{
 
 	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
+	}
+
+	public double getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
 	}
 	
 }

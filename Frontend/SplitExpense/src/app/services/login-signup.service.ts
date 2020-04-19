@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../classes/user';
+import {GlobalVariablesService} from './global-variables.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginSignupService {
 
-  private baseUri = 'http://localhost:8080/finalproject';
-  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private global: GlobalVariablesService) { }
 
   addUser(user: User) {
-      return this.http.post(this.baseUri + '/users/addUser', user, {headers: this.headers});
+      return this.http.post(this.global.getUrl() + '/users/addUser', user, {headers: this.global.getDefaultHttpHeader()});
   }
 
   login(user: User) {
-    return this.http.post(this.baseUri + '/login', user, {headers: this.headers});
+    return this.http.post(this.global.getUrl() + '/login', user, {headers: this.global.getDefaultHttpHeader()});
   }
 
 }
