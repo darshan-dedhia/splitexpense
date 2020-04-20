@@ -31,6 +31,10 @@ import {SelectedTransactionService} from './services/selected-transaction.servic
 import { AbsolutePipe } from './pipes/absolute.pipe';
 import { YourSharePipe } from './pipes/your-share.pipe';
 import { YesNoDialogComponent } from './dialogComponent/yes-no-dialog/yes-no-dialog.component';
+import { SettleUpComponent } from './Components/settle-up/settle-up.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 
 
@@ -51,9 +55,10 @@ import { YesNoDialogComponent } from './dialogComponent/yes-no-dialog/yes-no-dia
     AddModifyTransactionsComponent,
     AbsolutePipe,
     YourSharePipe,
-    YesNoDialogComponent
+    YesNoDialogComponent,
+    SettleUpComponent
   ],
-  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent, YesNoDialogComponent],
+  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent, YesNoDialogComponent, SettleUpComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -61,7 +66,9 @@ import { YesNoDialogComponent } from './dialogComponent/yes-no-dialog/yes-no-dia
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatAutocompleteModule
   ],
   providers: [LoginSignupService,
               AuthGuardGuard,

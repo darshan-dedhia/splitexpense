@@ -1,6 +1,8 @@
 package edu.darshandedhia.info6250.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
@@ -15,9 +17,12 @@ import edu.darshandedhia.info6250.constants.Message;
 import edu.darshandedhia.info6250.constants.Status;
 import edu.darshandedhia.info6250.constants.StatusCode;
 import edu.darshandedhia.info6250.exception.DatabaseException;
+import edu.darshandedhia.info6250.exception.UserException;
+import edu.darshandedhia.info6250.pojo.Group;
 import edu.darshandedhia.info6250.pojo.Transaction;
 import edu.darshandedhia.info6250.pojo.TransactionDetails;
 import edu.darshandedhia.info6250.pojo.User;
+import edu.darshandedhia.info6250.response.GroupResponse;
 import edu.darshandedhia.info6250.response.Response;
 import edu.darshandedhia.info6250.response.ResponseObject;
 
@@ -32,7 +37,7 @@ public class TransactionsDao extends DAO{
 	public Response fetchFriendTransactions(int userId, int friendUserid) {
 		try {
 			begin();
-			String sqlQuery = "select * from transactions t, transaction_details td1, transaction_details td2 where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID = :userId1 and td2.USER_ID = :userId2";
+			String sqlQuery = "select * from transactions t, transaction_details td1, transaction_details td2 where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.PAYMENT_IND_GRP_ID = 0 and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID = :userId1 and td2.USER_ID = :userId2";
 			NativeQuery<Transaction> q = fetchSession().createNativeQuery(sqlQuery, Transaction.class);
 			q.setParameter("userId1", userId);
 			q.setParameter("userId2", friendUserid);
@@ -112,14 +117,25 @@ public class TransactionsDao extends DAO{
 	public Response fetchGroupTransactions(int groupId) {
 		try {
 			begin();
-			String sqlQuery = "select * from transactions t, transaction_details td, group_details gd\r\n" + 
-					"where t.TRANSACTION_ID = td.TRANSACTION_ID and t.PAYMENT_IND_GRP_ID = gd.GROUP_ID\r\n" + 
-					"and gd.GROUP_ID = :groupId";
+			String sqlQuery = "select t.* from transactions t, group_details gd where t.PAYMENT_IND_GRP_ID = gd.GROUP_ID and gd.GROUP_ID = :groupId";
 			NativeQuery<Transaction> q = fetchSession().createNativeQuery(sqlQuery, Transaction.class);
 			q.setParameter("groupId", groupId);
 			List<Transaction> transactions = q.list();
 			
-			return new ResponseObject(StatusCode.success, Status.success, Status.success, transactions); 
+			Query qry = fetchSession().createQuery("from Group where groupId = :groupId");
+			qry.setParameter("groupId", groupId);
+			List<Group> groups = qry.list();
+			Group group = groups.get(0);
+			Hibernate.initialize(group.getUserList());
+			
+			String nativeQry = "select u.* from user u, group_user_details gud where u.USER_ID = gud.USER_ID and gud.GROUP_ID =  :groupId";
+			NativeQuery<User> u = fetchSession().createNativeQuery(nativeQry, User.class);
+			u.setParameter("groupId", groupId);
+			List<User> users = new ArrayList<User>();
+			users = u.list();
+			
+			
+			return new GroupResponse(StatusCode.success, Status.success, Status.success, group, transactions, users); 
 		} catch (HibernateException he) {
 			he.printStackTrace();
 			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
@@ -130,4 +146,5 @@ public class TransactionsDao extends DAO{
 			close();
 		}
 	}
+	
 }

@@ -1,1 +1,109 @@
-<p>groups works! {{groupId}}</p>
+<mat-card class="head-card">
+  <mat-card-title>
+    {{this.group.groupName}}
+  </mat-card-title>
+  <mat-card-content>
+    {{this.group.groupId}}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" type="button" (click)="addExpense()"><mat-icon>add_circle</mat-icon>&nbsp;Add Expense</button>
+    <button mat-raised-button color="warn" type = "button" (click)="settleUp()"><mat-icon>done_all</mat-icon>&nbsp; Settle Up</button>
+    <button mat-raised-button class="button-green"><mat-icon>notifications_active</mat-icon> &nbsp;Remind</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Date Column -->
+  <ng-container matColumnDef="transactionDate">
+    <mat-header-cell *matHeaderCellDef> Transaction Date </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.transactionDate | date}} </mat-cell>
+  </ng-container>
+
+  <!-- Category Column -->
+  <ng-container matColumnDef="category">
+    <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+  </ng-container>
+
+  <!-- Payment Column -->
+  <ng-container matColumnDef="payment">
+    <mat-header-cell *matHeaderCellDef>Payment</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <div *ngFor="let td of element.transactionDetails">
+        <span *ngIf="td.user.userId === this.userService.getterUser().userId">{{(td) | yourShare:element}}</span>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="action">
+    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button type = "button" (click)="updateTransaction(element, $event)" mat-button><mat-icon color="primary">open_in_new</mat-icon></button>
+      <button type = "button" (click)="deleteTransaction(element, $event)" mat-button><mat-icon color="warn">delete</mat-icon></button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column -->
+  <ng-container matColumnDef="expandedDetail">
+    <mat-cell *matCellDef="let detail">
+      <div class="grid-container">
+        <div class="div-param">
+          <span class="expansion-detail-title box-size">Transaction ID:</span>
+          <span class="box-size">{{detail.element.transactionId}}</span>
+        </div>
+        <div>
+          <span class="expansion-detail-title box-size">Date:</span>
+          <span class="box-size">{{detail.element.transactionDate | date}}</span>
+        </div>
+        <div class="expansion-detail-title box-size" *ngFor="let td of detail.element.transactionDetails">
+          <span class="expansion-detail-title box-size"
+                *ngIf="td.user.userId !== this.userService.getterUser().userId; else elseBlock">{{td.user.name}}'s share:</span>
+          <ng-template #elseBlock class="expansion-detail-title box-size">Your share:</ng-template>
+          <span class="box-size black-text">{{td.ownShare | currency}}</span><br>
+          <span class="expansion-detail-title box-size"
+                *ngIf="td.user.userId !== this.userService.getterUser().userId; else elseBlock1">{{td.user.name}} Paid:</span>
+          <ng-template #elseBlock1 class="expansion-detail-title box-size">You Paid:</ng-template>
+          <span class="box-size black-text">{{td.paid | currency}}</span>
+        </div>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"
+           matRipple
+           class="element-row"
+           [class.expanded]="expandedElement == row"
+           (click)="expandedElement = row"></mat-row>
+  <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+           [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+           style="overflow: hidden">
+  </mat-row>
+</mat-table>
+
+<mat-grid-list cols="5">
+  <mat-grid-tile [colspan]="4" class="table-card">
+
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1">
+    <mat-card class="head-card">
+      <mat-card-title>
+        Stats:
+      </mat-card-title>
+      <mat-card-content>
+        {{this.group.groupId}}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary">Click here!</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+

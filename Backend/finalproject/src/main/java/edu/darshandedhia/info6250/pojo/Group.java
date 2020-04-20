@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "GROUP_DETAILS")
@@ -31,9 +32,10 @@ public class Group implements Serializable{
 	@Column(name="GROUP_NAME")
 	private String groupName;
 	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name="GROUP_USER_DETAILS", 
+	//@JsonIgnore This is commented while Adding groups change
+	@JsonProperty(value = "userList", access = JsonProperty.Access.WRITE_ONLY)
+ 	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name="GROUP_USER_DETAILS",
 	joinColumns=@JoinColumn(name="GROUP_ID"),
 	inverseJoinColumns = @JoinColumn(name="USER_ID"))
 	private Collection<User> userList = new ArrayList<User>();

@@ -1,10 +1,17 @@
 
-<h1 class="mat-display-1 side-title">Groups:</h1>
+<h1 class="mat-display-1 side-title">Groups:<button mat-raised-button color="primary" class="float_right"><mat-icon>group_add</mat-icon></button></h1>
 <div *ngFor="let group of groupList">
-  <a class="mat-display-1 tree-data" routerLink="groups/{{group.groupId}}">{{group.groupName}}</a><br>
+  <span class="float_left">
+    <mat-icon class="icon-class">people</mat-icon>
+    <a class="tree-data" routerLink="groups/{{group.groupId}}">{{group.groupName}}</a>
+  </span><mat-icon class="float_right margin-right" color="warn">remove_circle</mat-icon>
+  <br>
 </div>
 <br>
-<h1 class="mat-display-1 side-title">Friends:</h1>
-<div *ngFor="let friend of friendsList">
-  <a class="mat-display-1 tree-data" routerLink="friends/{{friend.userId}}">{{friend.name}}</a><br>
+<h1 class="mat-display-1 side-title">Friends:<button mat-raised-button color="primary" class="float_right"><mat-icon>person_add</mat-icon></button></h1>
+<div *ngFor="let friend of friendsList" class="div-block">
+  <span class="float_left">
+  <mat-icon class="icon-class">person</mat-icon><a class="tree-data" routerLink="friends/{{friend.userId}}">{{friend.name}}</a>
+  </span>
+  <br>
 </div>

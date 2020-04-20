@@ -14,6 +14,8 @@ export class SelectedTransactionService {
   private equalSelectedUser: User[];
   public backUpTransaction: Transaction;
   private operation: string;
+  private transactionUserList: User[];
+  private individualOrGroup: number;
 
   constructor() { }
 
@@ -43,20 +45,22 @@ export class SelectedTransactionService {
       this.transaction.transactionDetails.forEach(td => {
         this.users.push(td.user);
         if (td.ownShare > 0) {
+          console.log('In here ');
+          console.log(td);
           this.equalSelectedUser.push(td.user);
         }
       });
     }
   }
 
-  addNewTransaction(users: User[]) {
+  addNewTransaction(users: User[], paymentIndividualOrGroupId: number) {
     this.operation = 'ADD';
     this.transaction = new Transaction();
     this.backUpTransaction = new Transaction();
     this.transaction.totalAmount = 0.0;
     this.users = users;
     this.equalSelectedUser = users;
-    this.transaction.paymentIndividualOrGroupId = 0;
+    this.transaction.paymentIndividualOrGroupId = paymentIndividualOrGroupId;
     this.transaction.category = '';
     this.transaction.description = '';
     this.transaction.splitMethod = 0;
@@ -126,6 +130,22 @@ export class SelectedTransactionService {
     if (index !== -1) {
       this.transactionList.splice(index, 1);
     }
+  }
+
+  setTransactionUserList(users: User[]) {
+    this.transactionUserList = users;
+  }
+
+  getTransactionUserList() {
+    return this.transactionUserList
+  }
+
+  getIndividualOrGroup() {
+    return this.individualOrGroup;
+  }
+
+  setIndividualOrGroup(id: number) {
+    this.individualOrGroup = id;
   }
 
 }

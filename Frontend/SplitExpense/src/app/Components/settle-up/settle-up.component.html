@@ -1,0 +1,51 @@
+<form (ngSubmit)="settleSubmission()">
+<h2 mat-dialog-title>Settle Up</h2>
+<mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Paid By:</mat-label>
+      <mat-select name="paidby" [(ngModel)]="this.paidByUserId" required>
+        <mat-option *ngFor="let user of this.selectedTransaction.getTransactionUserList()" value="{{user.userId}}">{{user.name}}</mat-option>
+      </mat-select>
+      <mat-error>
+        Paid by user is required
+      </mat-error>
+    </mat-form-field>
+    &nbsp;&nbsp;<mat-icon color="primary">swap_horiz</mat-icon>&nbsp;&nbsp;
+    <mat-form-field>
+      <mat-label>Paid To:</mat-label>
+      <mat-select name="paidto" [(ngModel)]="this.paidToUserId" required >
+        <mat-option *ngFor="let user of this.selectedTransaction.getTransactionUserList()" value="{{user.userId}}">{{user.name}}</mat-option>
+      </mat-select>
+      <mat-error>Paid to user is required</mat-error>
+    </mat-form-field> <br>
+    <mat-form-field>
+      <mat-label>Amount:</mat-label>
+      <input name="amount" matInput required [(ngModel)]="this.amount"/>
+      <mat-error>Amount is required*</mat-error>
+    </mat-form-field>
+    <!--<mat-form-field>
+      <mat-label>Paid By:</mat-label>
+      <input type="text" matInput [matAutocomplete]="auto" [formControl]="settlementFormControl" )/>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="userNameDisplayFunction">
+        <mat-option *ngFor="let user of filteredOptions | async" [value]="user">
+            {{user.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    &nbsp;&nbsp;<mat-icon color="primary">swap_horiz</mat-icon>&nbsp;&nbsp;
+    <mat-form-field>
+      <mat-label>Paid to:</mat-label>
+      <input type="text" matInput [matAutocomplete]="auto" [formControl]="settlementFormControl"/>
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="userNameDisplayFunction">
+        <mat-option *ngFor="let user of filteredOptions | async" [value]="user">
+          {{user.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>-->
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button type="button">CANCEL</button>
+  <button mat-button type="submit">SUBMIT</button>
+</mat-dialog-actions>
+</form>

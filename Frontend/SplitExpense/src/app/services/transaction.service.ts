@@ -25,4 +25,7 @@ export class TransactionService {
     return this.http.post(this.global.getUrl() + `/transactions/deleteTransaction/${transaction.transactionId}`, transaction,{headers: this.global.getDefaultHttpHeader()});
   }
 
+  fetchGroupTransactions(groupId: number){
+    return this.http.get(this.global.getUrl() + `/transactions/groups/${groupId}`, {headers: this.global.getDefaultHttpHeader()});
+  }
 }

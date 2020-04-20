@@ -12,6 +12,8 @@ import {AddModifyTransactionsComponent} from '../add-modify-transactions/add-mod
 import {SelectedTransactionService} from '../../services/selected-transaction.service';
 import {YesNoDialogComponent} from '../../dialogComponent/yes-no-dialog/yes-no-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {SettleUpComponent} from '../settle-up/settle-up.component';
+
 
 
 @Component({
@@ -50,11 +52,11 @@ export class FriendsComponent implements OnInit {
       this.selectedTransaction.emptyTransactions();
       let id = parseInt(params.get('id'));
       this.user = this.userService.getterFriendsList().find(({userId}) => userId === id);
-      console.log(this.user);
       this.transactionService.fetchFriendsTransaction(this.user.userId).subscribe(data => {
         if (data['statusCode'] === 200) {
-          console.log('Har bar print');
           this.selectedTransaction.loadTransactions(data['object']);
+          this.selectedTransaction.setIndividualOrGroup(0);
+          this.selectedTransaction.setTransactionUserList([this.user, this.userService.getterUser()]);
           this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
         } else {
           console.log(data); //Add small card below
@@ -66,7 +68,7 @@ export class FriendsComponent implements OnInit {
   }
 
   addExpense() {
-    this.selectedTransaction.addNewTransaction([this.user, this.userService.getterUser()]);
+    this.selectedTransaction.addNewTransaction([this.user, this.userService.getterUser()], 0);
     this.expenseAddModify('Add Transaction');
   }
 
@@ -111,6 +113,11 @@ export class FriendsComponent implements OnInit {
         this.snackBar.open('Deletion Aborted', 'Dismiss', {duration: 2000});
       }
     });
+  }
+
+  settleUp() {
+      console.log(this.selectedTransaction.getTransactionUserList());
+      this.dialog.open(SettleUpComponent);
   }
 
 }

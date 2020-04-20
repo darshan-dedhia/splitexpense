@@ -1,0 +1,59 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-deep-purple, 600, 500, 900);
+$accent: mat-palette($mat-amber, A400, A300, A600);
+
+.head-card{
+  padding: 20px;
+  margin: 25px;
+}
+
+table {
+  width: 100%;
+  padding: 20px;
+  margin: 25px;
+}
+
+.mat-elevation-z8{
+  padding: 20px;
+  margin: 25px;
+}
+
+.grid-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /*Make the grid smaller than the container*/
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  font-family: Roboto;
+}
+
+.expansion-detail-title{
+  color: #3F51B5;
+}
+
+.box-size{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.div-param{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.black-text{
+  color: black;
+}
+
+.button-green{
+  background-color: #8BC34A;
+  color: #F9F9FB;
+}

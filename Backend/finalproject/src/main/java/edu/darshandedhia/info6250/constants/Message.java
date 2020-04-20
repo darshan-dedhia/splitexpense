@@ -13,4 +13,6 @@ public class Message {
 	public static final String databaseExceptionOccured = "Exception occured while performing operation on database";
 	public static final String internalServerError = "Internal server error occured";
 	public static final String recordDeletedSuccessfully = "Record delted successfully";
+	public static final String groupCreatedSuccessfully = "Group created successfully";
+	public static final String noUserInGroup = "No user in group";
 }

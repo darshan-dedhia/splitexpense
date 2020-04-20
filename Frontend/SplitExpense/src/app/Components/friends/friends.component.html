@@ -3,12 +3,12 @@
     {{user.name}}
   </mat-card-title>
   <mat-card-content>
-    Username: {{user.userName}}
-    Email: {{user.email}}
+    <mat-icon>account_box</mat-icon> &nbsp; /{{user.userName}} &nbsp;&nbsp;
+    <mat-icon>email</mat-icon> &nbsp; {{user.email}}
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="addExpense()"><mat-icon>add_circle</mat-icon>&nbsp;Add Expense</button>
-    <button mat-raised-button color="warn"><mat-icon>done_all</mat-icon>&nbsp; Settle Up</button>
+    <button mat-raised-button color="primary" type="button" (click)="addExpense()"><mat-icon>add_circle</mat-icon>&nbsp;Add Expense</button>
+    <button mat-raised-button color="warn" type="button" (click)="settleUp()"><mat-icon>done_all</mat-icon>&nbsp; Settle Up</button>
     <button mat-raised-button class="button-green"><mat-icon>notifications_active</mat-icon> &nbsp;Remind</button>
   </mat-card-actions>
 </mat-card>
@@ -37,7 +37,7 @@
     <mat-header-cell *matHeaderCellDef>Payment</mat-header-cell>
     <mat-cell *matCellDef="let element">
       <div *ngFor="let td of element.transactionDetails">
-            <span *ngIf="td.user.userId === this.userService.getterUser().userId">{{(td) | yourShare}}</span>
+            <span *ngIf="td.user.userId === this.userService.getterUser().userId">{{(td) | yourShare:element}}</span>
       </div>
     </mat-cell>
   </ng-container>

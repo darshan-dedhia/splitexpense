@@ -43,7 +43,7 @@
           <mat-tab label="Equally" class="tab-body">
             <br><br>
             <div *ngFor="let td of this.selTransactions.getTransaction().transactionDetails; let index = index">
-              <mat-checkbox name=equalChkBox{{index}} class="tab-content" [checked]="true" (change)="equalCheckBoxChange($event, td)">{{td.user.name}}</mat-checkbox><br>
+              <mat-checkbox name=equalChkBox{{index}} class="tab-content" [checked]="this.equalCheckBoxValue(td)" (change)="equalCheckBoxChange($event, td)">{{td.user.name}}</mat-checkbox><br>
             </div>
 
           </mat-tab >

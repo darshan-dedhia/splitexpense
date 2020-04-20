@@ -10,10 +10,32 @@ $accent: mat-palette($mat-amber, A400, A300, A600);
   color: mat-color($primary);
 }
 
-.mat-display-1.tree-data{
+.tree-data{
   font-size: medium;
-  margin: 0px 0px 0px 20px;
+  font-family: Roboto;
+  margin-left: 20px;
+  padding: 0px;
   color: black;
   text-decoration: black;
 }
 
+.div-block{
+  margin: 0px;
+  padding: 0px;
+}
+
+.icon-class{
+  margin-left: 15px;
+}
+
+.float_left{
+  float: left;
+}
+
+.float_right{
+  float: right;
+}
+
+.margin-right{
+  margin-right: 20px;
+}

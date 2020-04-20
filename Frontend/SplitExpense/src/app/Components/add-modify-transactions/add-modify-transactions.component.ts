@@ -13,7 +13,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class AddModifyTransactionsComponent implements OnInit {
   private date = new Date((new Date()));
-  private selected: number;
   private rateControl;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private selTransactions: SelectedTransactionService,
@@ -21,7 +20,6 @@ export class AddModifyTransactionsComponent implements OnInit {
               private dialogRef: MatDialogRef<AddModifyTransactionsComponent>,
               private snackbar: MatSnackBar) {
     console.log(this.selTransactions);
-    this.selected = this.selTransactions.getUsers().length;
   }
 
   ngOnInit() {
@@ -29,11 +27,9 @@ export class AddModifyTransactionsComponent implements OnInit {
 
   equalCheckBoxChange(input, td: TransactionDetails) {
       if (input.checked) {
-        this.selected++;
         this.selTransactions.addEqualSelectedUser(td.user);
         this.recalculateShare(this.selTransactions.getTransaction().splitMethod);  //Split here
       } else {
-        this.selected--;
         this.selTransactions.removeEqualSelectedUser(td.user);
         this.recalculateShare(this.selTransactions.getTransaction().splitMethod); //Split here
       }
@@ -59,8 +55,8 @@ export class AddModifyTransactionsComponent implements OnInit {
     if (selectedTabIndex === 0) {
       const users = this.selTransactions.getEqualSelectedUser();
       this.selTransactions.getTransaction().transactionDetails.forEach(td => {
-        if (users.includes(td.user) && this.selected > 0) {
-          td.ownShare = this.selTransactions.getTransaction().totalAmount / this.selected;
+        if (users.includes(td.user) && this.selTransactions.getEqualSelectedUser().length > 0) {
+          td.ownShare = this.selTransactions.getTransaction().totalAmount / this.selTransactions.getEqualSelectedUser().length;
         } else {
           td.ownShare = 0;
         }
@@ -127,6 +123,10 @@ export class AddModifyTransactionsComponent implements OnInit {
     event.stopImmediatePropagation();
     this.selTransactions.replaceBackUpTransaction();
     this.closeDialog('CANCEL');
+  }
+
+  equalCheckBoxValue(td: TransactionDetails) {
+    return this.selTransactions.getEqualSelectedUser().find((user) => user === td.user);
   }
 
 }
