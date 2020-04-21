@@ -1,1 +1,103 @@
-<p>summary works!</p>
+<div>
+<mat-card class="head-card">
+  <mat-card-title>
+    <span>Welcome {{this.userService.getterUser().name}}</span>
+  </mat-card-title>
+</mat-card>
+</div>
+<div>
+  <mat-grid-list cols="3" rowHeight="125px">
+    <mat-grid-tile class="display-grid-tile-report">
+      <mat-card class="display-report-card">
+        <mat-card-header>
+          <mat-card-title >
+            Balances
+          </mat-card-title>
+          <mat-card-subtitle>
+            <span *ngIf="(this.totals.ownShare === this.totals.paid)">Settled</span>
+            <span *ngIf="(this.totals.ownShare > this.totals.paid)">You Owe</span>
+            <span *ngIf="(this.totals.ownShare < this.totals.paid)">You Lent</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h1 *ngIf="(this.totals.ownShare >= this.totals.paid)">{{(this.totals.ownShare - this.totals.paid) | currency}}</h1>
+          <h1 *ngIf="(this.totals.ownShare < this.totals.paid)">{{(this.totals.paid - this.totals.ownShare) | currency}} </h1>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!----------------------------------->
+    <mat-grid-tile class="display-grid-tile-report">
+      <mat-card class="display-report-card">
+        <mat-card-header>
+          <mat-card-title>
+            Your Share
+          </mat-card-title>
+          <mat-card-subtitle>
+            <span>Till Date</span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h1>
+            {{this.totals.ownShare | currency}}
+          </h1>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!----------------------------------->
+    <mat-grid-tile class="display-grid-tile-report">
+      <mat-card class="display-report-card">
+        <mat-card-header>
+          <mat-card-title>
+            You Paid
+          </mat-card-title>
+          <mat-card-subtitle>
+            Till Date
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <h1>{{this.totals.paid | currency}}</h1>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <!-------------------------------------->
+  </mat-grid-list>
+</div>
+<div>
+  <mat-grid-list cols="2">
+    <mat-grid-tile class="bottom-grid-tile">
+      <mat-card class="bottom-card-tile">
+        <mat-card-title>
+          Total Balances
+        </mat-card-title>
+        <mat-card-content>
+          <ul>
+          <div *ngFor="let rpt of this.allMembersRpt">
+            <span *ngIf="(rpt.paid >= rpt.ownShare)" class="card-font"><li>{{rpt.user | user}} get's back {{(rpt.paid - rpt.ownShare) | currency}}</li></span>
+            <span *ngIf="(rpt.paid < rpt.ownShare)" class="card-font"><li>{{rpt.user | user}} owes you {{(rpt.ownShare - rpt.paid) | currency}}</li></span>
+            <br>
+          </div>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+      <mat-grid-tile class="bottom-grid-tile">
+        <mat-card class="bottom-card-tile">
+          <mat-card-title>
+            Your Categorized Spending
+          </mat-card-title>
+          <mat-card-content>
+            <ul>
+              <div *ngFor="let rpt of this.catTot">
+                <span *ngIf="rpt !== 'SETTLEMENT'">
+                <span *ngIf="(rpt != '')" class="card-font"><li><strong>{{rpt[0]}}:</strong>{{rpt[1] | currency}}</li></span>
+                <span *ngIf="(rpt == '')" class="card-font"><li><strong>Uncategorized:</strong>{{rpt[1] | currency}}</li></span>
+                </span>
+                <br>
+              </div>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  </mat-grid-list>
+</div>

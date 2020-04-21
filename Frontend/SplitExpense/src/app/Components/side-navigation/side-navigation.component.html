@@ -1,17 +1,23 @@
-
-<h1 class="mat-display-1 side-title">Groups:<button mat-raised-button color="primary" class="float_right"><mat-icon>group_add</mat-icon></button></h1>
+<div>
+<h1 class="mat-display-1 side-title">Groups:<button type="button" (click)="addUpdateGroup()" mat-raised-button color="primary" class="float_right"><mat-icon>group_add</mat-icon></button></h1>
 <div *ngFor="let group of groupList">
-  <span class="float_left">
-    <mat-icon class="icon-class">people</mat-icon>
-    <a class="tree-data" routerLink="groups/{{group.groupId}}">{{group.groupName}}</a>
+  <div>
+  <span>
+    <mat-icon class="icon-class">people</mat-icon><a class="tree-data" routerLink="groups/{{group.groupId}}">{{group.groupName}}</a>
   </span><mat-icon class="float_right margin-right" color="warn">remove_circle</mat-icon>
+  </div>
   <br>
 </div>
+</div>
 <br>
-<h1 class="mat-display-1 side-title">Friends:<button mat-raised-button color="primary" class="float_right"><mat-icon>person_add</mat-icon></button></h1>
+<div>
+<h1 class="mat-display-1 side-title">Friends:<button mat-raised-button color="primary" class="float_right" type="button" (click)="addFriend()"><mat-icon>person_add</mat-icon></button></h1>
 <div *ngFor="let friend of friendsList" class="div-block">
-  <span class="float_left">
+  <div>
+  <span>
   <mat-icon class="icon-class">person</mat-icon><a class="tree-data" routerLink="friends/{{friend.userId}}">{{friend.name}}</a>
-  </span>
+  </span></div>
+
   <br>
+</div>
 </div>

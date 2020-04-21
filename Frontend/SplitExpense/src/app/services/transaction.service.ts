@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {User} from '../classes/user';
 import {GlobalVariablesService} from './global-variables.service';
-import {Transaction} from "../classes/transaction";
+import {Transaction} from '../classes/transaction';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class TransactionService {
   }
 
   addTransaction(transaction: Transaction) {
-    console.log(transaction);
+    //console.log(transaction);
     return this.http.post(this.global.getUrl() + '/transactions/addTransaction', transaction, {headers: this.global.getDefaultHttpHeader()});
   }
 
@@ -25,7 +25,24 @@ export class TransactionService {
     return this.http.post(this.global.getUrl() + `/transactions/deleteTransaction/${transaction.transactionId}`, transaction,{headers: this.global.getDefaultHttpHeader()});
   }
 
-  fetchGroupTransactions(groupId: number){
+  fetchGroupTransactions(groupId: number) {
     return this.http.get(this.global.getUrl() + `/transactions/groups/${groupId}`, {headers: this.global.getDefaultHttpHeader()});
   }
+
+  fetchReport(friendUserId: number) {
+    return this.http.get(this.global.getUrl() + `/transactions/friends/sum/${friendUserId}`, {headers: this.global.getDefaultHttpHeader()});
+  }
+
+  fetchGroupBalance(groupId: number){
+    return this.http.get(this.global.getUrl() + `/transactions/groups/sum/${groupId}`, {headers: this.global.getDefaultHttpHeader()});
+  }
+
+  fetchSelfTotals() {
+    return this.http.get(this.global.getUrl() + '/transactions/self/totals', {headers: this.global.getDefaultHttpHeader()});
+  }
+
+  fetchCategorizedTotal() {
+    return this.http.get(this.global.getUrl() + '/transactions/self/catorisedtotals', {headers: this.global.getDefaultHttpHeader()});
+  }
+
 }

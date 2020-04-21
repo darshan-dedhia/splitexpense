@@ -65,6 +65,14 @@ export class SettleUpComponent implements OnInit {
         return 'Amount has to be more than zero';
       }
 
+      if (this.paidByUserId === '' || this.paidByUserId === null || this.paidByUserId === undefined){
+        return 'Select paid by user';
+      }
+
+    if (this.paidToUserId === '' || this.paidToUserId === null || this.paidToUserId === undefined){
+      return 'Select paid to user';
+    }
+
       return true;
   }
 

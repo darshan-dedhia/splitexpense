@@ -9,10 +9,91 @@
   <mat-card-actions>
     <button mat-raised-button color="primary" type="button" (click)="addExpense()"><mat-icon>add_circle</mat-icon>&nbsp;Add Expense</button>
     <button mat-raised-button color="warn" type="button" (click)="settleUp()"><mat-icon>done_all</mat-icon>&nbsp; Settle Up</button>
-    <button mat-raised-button class="button-green"><mat-icon>notifications_active</mat-icon> &nbsp;Remind</button>
+    <button mat-raised-button class="button-green" (click)="email()"><mat-icon>notifications_active</mat-icon> &nbsp;Remind</button>
   </mat-card-actions>
 </mat-card>
-
+<mat-grid-list cols="5" rowHeight="125px">
+  <mat-grid-tile class="display-grid-tile-report">
+    <mat-card class="display-report-card">
+      <mat-card-header>
+        <mat-card-title >
+          Balances
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span *ngIf="(this.totals.ownShare === this.totals.paid)">Settled</span>
+          <span *ngIf="(this.totals.ownShare > this.totals.paid)">You Owe</span>
+          <span *ngIf="(this.totals.ownShare < this.totals.paid)">You Lent</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1 *ngIf="(this.totals.ownShare >= this.totals.paid)">{{(this.totals.ownShare - this.totals.paid) | currency}}</h1>
+        <h1 *ngIf="(this.totals.ownShare < this.totals.paid)">{{(this.totals.paid - this.totals.ownShare) | currency}} </h1>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile class="display-grid-tile-report">
+    <mat-card class="display-report-card">
+      <mat-card-header>
+        <mat-card-title>
+          Your Share
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span>Till Date</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1>
+          {{this.totals.ownShare | currency}}
+        </h1>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile class="display-grid-tile-report">
+    <mat-card class="display-report-card">
+      <mat-card-header>
+        <mat-card-title>
+          You Paid
+        </mat-card-title>
+        <mat-card-subtitle>
+          Till Date
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1>{{this.totals.paid | currency}}</h1>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile class="display-grid-tile-report">
+    <mat-card class="display-report-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{this.user.name.split(" ", 1)}}'s Share
+        </mat-card-title>
+        <mat-card-subtitle>
+          Till Date
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1>{{this.friend.ownShare | currency}}</h1>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile class="display-grid-tile-report">
+    <mat-card class="display-report-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{this.user.name.split(" ", 1)}} Paid
+        </mat-card-title>
+        <mat-card-subtitle>
+          Till Date
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h1>{{this.friend.paid | currency }}</h1>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
 <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!-- Date Column -->
   <ng-container matColumnDef="transactionDate">
@@ -89,6 +170,7 @@
   </mat-row>
 </mat-table>
 
+<!--
 <mat-grid-list cols="5">
   <mat-grid-tile [colspan]="4" class="table-card">
 
@@ -109,3 +191,4 @@
   </mat-grid-tile>
 </mat-grid-list>
 
+-->

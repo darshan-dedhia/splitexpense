@@ -7,14 +7,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.darshandedhia.info6250.constants.Message;
+import edu.darshandedhia.info6250.constants.Status;
+import edu.darshandedhia.info6250.constants.StatusCode;
 import edu.darshandedhia.info6250.dao.UserDao;
 import edu.darshandedhia.info6250.exception.UserException;
+import edu.darshandedhia.info6250.pojo.Mail;
 import edu.darshandedhia.info6250.pojo.User;
+import edu.darshandedhia.info6250.response.Response;
 import edu.darshandedhia.info6250.service.UserService;
 
 @RestController
@@ -25,9 +31,6 @@ public class UserController {
 	@Qualifier(value="userService")
 	private UserService userService;
 	
-	@Autowired
-	@Qualifier(value="userDao")
-	private UserDao userDao;
 	
 //	Controller Methods declaration	
 	@RequestMapping(value = "/addUser", produces = "application/json", method=RequestMethod.POST)
@@ -35,36 +38,30 @@ public class UserController {
 		return userService.addUserService(user, result);
 	}
 	
-	//This is dummy method. Needs code cleaning post testing
-	@RequestMapping(value = "/valUser", produces = "application/json", method=RequestMethod.POST)
-	public void valUser(HttpServletRequest request){
-		System.out.println("Validating user");
-		System.out.println(request.getAttribute("userName").toString());
-		System.out.println(System.currentTimeMillis());
-	}
 	
-	@RequestMapping(value = "/addFriend", produces = "application/json", method=RequestMethod.POST)
-	public ResponseEntity<Object> addFriend(HttpServletRequest request){
-		System.out.println("AddFriend here:");
+	@RequestMapping(value = "/addFriend/{friendId}", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> addFriend(@PathVariable("friendId") String friendUserName, HttpServletRequest request){
 		try {
-			System.out.println("UserName: " + request.getAttribute("userName").toString());
-			System.out.println("Friend: " + request.getAttribute("friend").toString());
-			User user = userDao.getUserByUsername(request.getAttribute("userName").toString());
-			User friend = userDao.getUserByUsername(request.getAttribute("friend").toString());
-			user.getFriends().add(friend);
 			
-			user = userDao.getUserByUsername("darshan.dedhia93_2");
-			return new ResponseEntity<Object>(user, HttpStatus.OK);
-		} catch (UserException e) {
+			String selfUserName =  request.getAttribute("userName").toString();
+			System.out.println(selfUserName);
+			if (selfUserName != null || selfUserName != "") {
+				System.out.println(selfUserName);
+				return userService.addFriend(selfUserName, friendUserName);
+			} else {
+				return new ResponseEntity<Object>(new Response(StatusCode.inappropriateInputFormat, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.OK);
+			}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	@RequestMapping(value = "/updateUser", produces = "application/json", method=RequestMethod.POST)
-	public ResponseEntity<Object> updateUser(@RequestBody User user){
-		User userr = userDao.updateUser(user);
-		return new ResponseEntity<Object>(userr, HttpStatus.OK);
+
+	@RequestMapping(value = "/mail", produces = "application/json", method=RequestMethod.POST)
+	public ResponseEntity<Object> mailUser(@RequestBody Mail mail){
+		return userService.sendMail(mail);
 	}
+	
 }

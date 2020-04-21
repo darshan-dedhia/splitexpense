@@ -15,4 +15,5 @@ public class Message {
 	public static final String recordDeletedSuccessfully = "Record delted successfully";
 	public static final String groupCreatedSuccessfully = "Group created successfully";
 	public static final String noUserInGroup = "No user in group";
+	public static final String mailNotSent = "Mail not sent to user";
 }

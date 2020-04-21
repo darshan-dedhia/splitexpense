@@ -34,10 +34,14 @@
   	<filter-mapping>
   		<filter-name>tokenFilter</filter-name>
   		<url-pattern>/users/valUser</url-pattern>
-  		<url-pattern>/users/addFriend</url-pattern>
+  		<url-pattern>/users/addFriend/*</url-pattern>
     	<url-pattern>/transactions/fetchFriendTransactions/*</url-pattern>
     	<url-pattern>/transactions/addTransaction</url-pattern>
     	<url-pattern>/transactions/deleteTransaction/*</url-pattern>
     	<url-pattern>/transactions/groups/*</url-pattern>
+    	<url-pattern>/transactions/friends/sum/*</url-pattern>
+    	<url-pattern>/transactions/groups/sum/*</url-pattern>
+    	<url-pattern>/transactions/self/totals</url-pattern>
+    	<url-pattern>/transactions/self/catorisedtotals</url-pattern>
   	</filter-mapping>
 </web-app>

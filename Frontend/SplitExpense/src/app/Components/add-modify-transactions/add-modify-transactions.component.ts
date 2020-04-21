@@ -14,6 +14,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class AddModifyTransactionsComponent implements OnInit {
   private date = new Date((new Date()));
   private rateControl;
+  private categories = ['General', 'Rent', 'Mortgage', 'Household supplies', 'Services', 'Medical Expenses', 'Transport', 'Heat', 'Electricity'];
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private selTransactions: SelectedTransactionService,
               private transactionService: TransactionService,
@@ -95,6 +96,7 @@ export class AddModifyTransactionsComponent implements OnInit {
   }
 
   validatePayment() {
+    if (!this.validateInputs()) {return 'FAILURE'; }
     const transaction = this.selTransactions.getTransaction();
     console.log(transaction);
     let totalAmount: number;
@@ -113,6 +115,44 @@ export class AddModifyTransactionsComponent implements OnInit {
       return 'TOTAL_CREDITS_DEBIT_DONT_MATCH';
     }
     return 'SUCCESS';
+  }
+
+  validateInputs() {
+    const transaction = this.selTransactions.getTransaction();
+    if ( transaction.paymentIndividualOrGroupId === null || transaction.paymentIndividualOrGroupId === undefined) {
+      this.snackbar.open('Inernal group ID error occured', 'Dismiss', {duration: 2000});
+      return false;
+    }
+
+    if (transaction.description === '' || transaction.description.trim().length === 0 || transaction.description === null || transaction.description === undefined) {
+      this.snackbar.open('Description is empty', 'Dismiss', {duration: 2000});
+      return false;
+    }
+
+    if (transaction.category === '' || transaction.category.trim().length === 0 || transaction.category === null || transaction.category === undefined) {
+      this.snackbar.open('Category cannot be empty', 'Dismiss', {duration: 2000});
+      return false;
+    }
+
+    if (transaction.totalAmount < 0 || transaction.description.trim().length === 0 || transaction.description === null || transaction.description === undefined) {
+      this.snackbar.open('Total amount should be greater than zero', 'Dismiss', {duration: 2000});
+      return false;
+    }
+
+    for(let i = 0; i < transaction.transactionDetails.length; i++){
+
+      if (transaction.transactionDetails[i].percentage < 0) {
+        this.snackbar.open('Percentage should be from 0-100', 'Dismiss', {duration: 2000});
+        return false;
+      }
+
+      if (transaction.transactionDetails[i].ownShare < 0 || transaction.transactionDetails[i].paid < 0) {
+        this.snackbar.open('Amount should be more than 0', 'Dismiss', {duration: 2000});
+        return false;
+      }
+    }
+
+    return true;
   }
 
   closeDialog(result) {

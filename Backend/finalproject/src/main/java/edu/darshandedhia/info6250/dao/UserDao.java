@@ -16,6 +16,7 @@ import edu.darshandedhia.info6250.exception.UserException;
 import edu.darshandedhia.info6250.pojo.Group;
 import edu.darshandedhia.info6250.pojo.User;
 import edu.darshandedhia.info6250.response.Response;
+import edu.darshandedhia.info6250.response.ResponseObject;
 import edu.darshandedhia.info6250.constants.*;
 @Component
 public class UserDao extends DAO{
@@ -72,11 +73,13 @@ public class UserDao extends DAO{
 		Hibernate.initialize(users.getFriends());
 		Hibernate.initialize(users.getFriendsOf());
 		Hibernate.initialize(users.getGroupList());
+		commit();
 		return users;
 		} catch (UserException ue) {
 			throw ue;
 		} finally {
 			close();
+			fetchSession().clear();
 		}
 	}
 	
@@ -102,5 +105,31 @@ public class UserDao extends DAO{
 		User userr = fetchSession().get(User.class, user.getUserId());
 		close();
 		return userr;
+	}
+	
+	public Response addFriend(String userName, String friendUserName) {
+		try {
+			
+			User self = getUserByUsername(userName);
+			User friend = getUserByUsername(friendUserName);
+			if (self.getFriends().contains(friend)) throw new UserException("Friend is already connected");
+			begin();
+			self.getFriends().add(friend);
+			fetchSession().saveOrUpdate(self);
+			commit();
+			return new ResponseObject(StatusCode.success, Status.success, Message.userCreated, friend);
+			
+			} catch (UserException e) {
+				e.printStackTrace();
+				return new Response(StatusCode.badRequest, Status.failure, e.getMessage());
+			} catch (HibernateException he) {
+				he.printStackTrace();
+				return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				return new Response(StatusCode.internalServerError, Status.error, Message.userCreationError);
+			} finally {
+				close();
+			}
 	}
 }

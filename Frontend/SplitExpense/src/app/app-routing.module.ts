@@ -19,7 +19,8 @@ const routes: Routes = [
      {path: 'friends/:id', component: FriendsComponent},
      {path: 'groups/:id', component: GroupsComponent}
    ]
-  }
+  },
+  {path : '**', component : HomepageComponent}
 ];
 
 @NgModule({

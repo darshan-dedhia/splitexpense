@@ -13,6 +13,7 @@ $accent: mat-palette($mat-amber, A400, A300, A600);
 .tree-data{
   font-size: medium;
   font-family: Roboto;
+  float: left;
   margin-left: 20px;
   padding: 0px;
   color: black;
@@ -26,11 +27,10 @@ $accent: mat-palette($mat-amber, A400, A300, A600);
 
 .icon-class{
   margin-left: 15px;
+
 }
 
-.float_left{
-  float: left;
-}
+
 
 .float_right{
   float: right;

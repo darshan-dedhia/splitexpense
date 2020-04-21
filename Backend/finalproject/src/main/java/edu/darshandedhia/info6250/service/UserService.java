@@ -12,10 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
+import edu.darshandedhia.info6250.config.Email;
+import edu.darshandedhia.info6250.constants.Message;
 import edu.darshandedhia.info6250.constants.Status;
 import edu.darshandedhia.info6250.constants.StatusCode;
 import edu.darshandedhia.info6250.dao.UserDao;
 import edu.darshandedhia.info6250.pojo.ApiError;
+import edu.darshandedhia.info6250.pojo.Mail;
 import edu.darshandedhia.info6250.pojo.User;
 import edu.darshandedhia.info6250.response.ErrorResponse;
 import edu.darshandedhia.info6250.response.Response;
@@ -47,4 +50,16 @@ public class UserService {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 	
+	public ResponseEntity<Object> addFriend(String userName, String friendUserName){
+		return new ResponseEntity<Object>(userDao.addFriend(userName, friendUserName), HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Object> sendMail(Mail mail){
+		try {
+		    Email.sendEmail(mail.getTo(), mail.getSubject(), mail.getBody());
+		    return new ResponseEntity<Object>(new Response(StatusCode.success, Status.success, Status.success), HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.serviceUnavailable, Status.error, Message.mailNotSent), HttpStatus.OK);
+		}
+	}
 }

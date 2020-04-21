@@ -34,6 +34,11 @@ import { YesNoDialogComponent } from './dialogComponent/yes-no-dialog/yes-no-dia
 import { SettleUpComponent } from './Components/settle-up/settle-up.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { AddModifyGroupComponent } from './Components/add-modify-group/add-modify-group.component';
+import { AddFriendComponent } from './Components/add-friend/add-friend.component';
+import { UserPipe } from './pipes/user.pipe';
+import { ViewGroupBalanceComponent } from './Components/view-group-balance/view-group-balance.component';
+
 
 
 
@@ -56,9 +61,19 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     AbsolutePipe,
     YourSharePipe,
     YesNoDialogComponent,
-    SettleUpComponent
+    SettleUpComponent,
+    AddModifyGroupComponent,
+    AddFriendComponent,
+    UserPipe,
+    ViewGroupBalanceComponent
   ],
-  entryComponents: [MessageDialogComponent, AddModifyTransactionsComponent, YesNoDialogComponent, SettleUpComponent],
+  entryComponents: [MessageDialogComponent,
+                   AddModifyTransactionsComponent,
+                   YesNoDialogComponent,
+                   SettleUpComponent,
+                   AddModifyGroupComponent,
+                   AddFriendComponent,
+                   ViewGroupBalanceComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

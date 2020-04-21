@@ -1,0 +1,21 @@
+<form (ngSubmit)="createGroup()">
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Group Name:</mat-label>
+    <input matInput placeholder="Ex. Foo Bar" name="groupName" [(ngModel)]="this.group.groupName" required>
+    <mat-error>
+      Group name is <strong>required*</strong>
+    </mat-error>
+  </mat-form-field>
+  <div *ngFor="let user of this.userService.getterFriendsList(); let index = index">
+    <mat-checkbox name=friend{{index}}  [checked]="this.checkUserInGroup(user)" (change)="this.userAddRemove($event, user)">{{user.name}}</mat-checkbox><br>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button type="button" (click)="cancelButton()">Cancel</button>
+  <button *ngIf="stateAddUpdate(); else save" mat-raised-button type="submit" color="primary">Create</button>
+  <ng-template #save><button mat-raised-button type="submit" color="primary">Save</button></ng-template>
+</mat-dialog-actions>
+</form>

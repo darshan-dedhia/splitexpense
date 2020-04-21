@@ -59,5 +59,27 @@ public class TransactionController {
 		return transactionService.fetchGroupTransactions(groupId);
 	}
 	
+	@RequestMapping(value = "/friends/sum/{friendUserId}", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> fetchFriendSum(@PathVariable("friendUserId") String friendUserId, HttpServletRequest request){
+		String userId =  (String) request.getAttribute("userId");
+		return transactionService.fetchFriendSums(userId, friendUserId);
+	}
 	
+	@RequestMapping(value = "/groups/sum/{groupId}", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> fetchGroupSum(@PathVariable("groupId") String groupId, HttpServletRequest request){
+		String userId =  (String) request.getAttribute("userId");
+		return transactionService.fetchGroupSums(userId, groupId);
+	}
+	
+	@RequestMapping(value = "/self/totals", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> fetchSelfTotals(HttpServletRequest request){
+		String userId =  (String) request.getAttribute("userId");
+		return transactionService.fetchSelfTotals(userId);
+	}
+	
+	@RequestMapping(value = "/self/catorisedtotals", produces = "application/json", method=RequestMethod.GET)
+	public ResponseEntity<Object> fetchCategorisedTotals(HttpServletRequest request){
+		String userId =  (String) request.getAttribute("userId");
+		return transactionService.fetchCategorisedTotals(userId);
+	}
 }

@@ -1,7 +1,7 @@
 <div class="background">
 <!--NavBar starts here-->
 <mat-toolbar color="primary" class="navbar">
-  <div>SplitExpense</div>
+  <div><mat-icon>money_off</mat-icon>plit<mat-icon>euro</mat-icon>xpense</div>
 <!-- Login form code -->
   <div >
     <form (ngSubmit)="login()">
@@ -40,7 +40,8 @@
         <span class="se-form-side-pad">
           <mat-form-field>
             <mat-label>Username</mat-label>
-            <input matInput type="text" name="signup-userName" id="signup-userName" [(ngModel)]="signUpUser.userName">
+            <input matInput type="text" name="signup-userName" id="signup-userName" [(ngModel)]="signUpUser.userName" pattern="^[a-zA-Z0-9]+$" required>
+            <mat-error>Username is required and should be aplhanumeric</mat-error>
           </mat-form-field>
         </span>
         <br>
@@ -48,7 +49,8 @@
         <span class="se-form-side-pad">
           <mat-form-field>
             <mat-label>Password</mat-label>
-            <input matInput type="password" name="signup-password" id="signup-password" [(ngModel)]="signUpUser.password">
+            <input matInput type="password" name="signup-password" id="signup-password" [(ngModel)]="signUpUser.password" required>
+            <mat-error>Password is required</mat-error>
           </mat-form-field>
         </span>
         <br>
@@ -56,7 +58,8 @@
         <span class="se-form-side-pad">
           <mat-form-field>
             <mat-label>Name</mat-label>
-            <input matInput type="text" name="signup-name" id="signup-name" [(ngModel)]="signUpUser.name">
+            <input matInput type="text" name="signup-name" id="signup-name" [(ngModel)]="signUpUser.name" required>
+            <mat-error>Name is Required</mat-error>
           </mat-form-field>
         </span>
         <br>
@@ -64,7 +67,8 @@
         <span class="se-form-side-pad">
           <mat-form-field>
             <mat-label>Email</mat-label>
-            <input matInput type="email" name="signup-email" id="signup-email" [(ngModel)]="signUpUser.email">
+            <input matInput type="email" name="signup-email" id="signup-email" [(ngModel)]="signUpUser.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+            <mat-error>Valid Email is required</mat-error>
           </mat-form-field>
         </span>
         <br>

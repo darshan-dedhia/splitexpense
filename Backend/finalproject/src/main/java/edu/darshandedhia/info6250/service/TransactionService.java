@@ -50,4 +50,50 @@ public class TransactionService {
 			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
 		}
 	}
+	
+	public ResponseEntity<Object> fetchFriendSums (String userid, String friendUserid){
+		try {
+			int userId = Integer.parseInt(userid);
+			int friendUserId = Integer.parseInt(friendUserid);
+			return new ResponseEntity<Object>(transactionsDao.fetchFriendSums(userId, friendUserId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
+	}
+	
+	public ResponseEntity<Object> fetchGroupSums (String userid, String groupid){
+		try {
+			int userId = Integer.parseInt(userid);
+			int groupId = Integer.parseInt(groupid);
+			return new ResponseEntity<Object>(transactionsDao.fetchGroupSums(userId, groupId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
+	}
+	
+	public ResponseEntity<Object> fetchSelfTotals (String userid){
+		try {
+			int userId = Integer.parseInt(userid);
+			return new ResponseEntity<Object>(transactionsDao.fetchSelfTotals(userId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
+	}
+	
+	public ResponseEntity<Object> fetchCategorisedTotals (String userid){
+		try {
+			int userId = Integer.parseInt(userid);
+			return new ResponseEntity<Object>(transactionsDao.fetchCategorisedTotals(userId), HttpStatus.OK);
+		} catch (NumberFormatException nfe) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.failure, Message.malFormedApiUrlRequest), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>(new Response(StatusCode.badRequest, Status.error, Message.internalServerError), HttpStatus.OK);
+		}
+	}
 }

@@ -10,7 +10,10 @@
         </mat-form-field><br>
         <mat-form-field>
           <mat-label>Category:</mat-label>
-          <input matInput name="category" [(ngModel)]="this.selTransactions.getTransaction().category"  required>
+          <!--<input matInput name="category" [(ngModel)]="this.selTransactions.getTransaction().category"  required>-->
+          <mat-select [(value)] ="this.selTransactions.getTransaction().category">
+            <mat-option *ngFor="let category of this.categories" [value]="category">{{category}}</mat-option>
+          </mat-select>
           <mat-error>Category is required</mat-error>
         </mat-form-field><br>
         <mat-form-field>

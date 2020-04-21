@@ -14,6 +14,9 @@ import {YesNoDialogComponent} from '../../dialogComponent/yes-no-dialog/yes-no-d
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Group} from "../../classes/group";
 import {SettleUpComponent} from "../settle-up/settle-up.component";
+import {AddModifyGroupComponent} from "../add-modify-group/add-modify-group.component";
+import {Report} from "../../classes/report";
+import {ViewGroupBalanceComponent} from "../view-group-balance/view-group-balance.component";
 
 @Component({
   selector: 'app-groups',
@@ -56,10 +59,10 @@ export class GroupsComponent implements OnInit {
       this.transactionService.fetchGroupTransactions(id).subscribe(data => {
         if (data['statusCode'] === 200) {
           this.group = data['group'];
-          this.group.users = data['users'];
+          this.group.userList = data['users'];
           console.log(this.group.groupId);
           this.selectedTransaction.setIndividualOrGroup(this.group.groupId);
-          this.selectedTransaction.setTransactionUserList(this.group.users);
+          this.selectedTransaction.setTransactionUserList(this.group.userList);
           this.selectedTransaction.loadTransactions(data['transactions']);
           this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
         } else {
@@ -72,7 +75,7 @@ export class GroupsComponent implements OnInit {
   }
 
   addExpense() {
-    this.selectedTransaction.addNewTransaction(this.group.users, this.group.groupId);
+    this.selectedTransaction.addNewTransaction(this.group.userList, this.group.groupId);
     this.expenseAddModify('Add Transaction');
   }
 
@@ -99,7 +102,7 @@ export class GroupsComponent implements OnInit {
   deleteTransaction(transaction: Transaction, event: MouseEvent) {
     console.log(transaction);
     event.stopPropagation();
-    const result = this.dialog.open(YesNoDialogComponent, {data: {title: 'Confirm Deletion', content: 'Are you sure you want to delete selected record'}});
+    const result = this.dialog.open(YesNoDialogComponent, {data: {title: 'Confirm Deletion', content: 'Are you sure you want to delete selected record'}, disableClose: true, autoFocus: true});
     result.afterClosed().subscribe(data => {
       if (data === 'YES') {
         this.transactionService.deleteTransaction(transaction).subscribe(data => {
@@ -121,9 +124,46 @@ export class GroupsComponent implements OnInit {
 
   settleUp() {
     console.log(this.selectedTransaction.getTransactionUserList());
-    this.dialog.open(SettleUpComponent);
+    this.dialog.open(SettleUpComponent).afterClosed().subscribe(data => {
+      this.dataSource = new ExampleDataSource().connect(this.selectedTransaction.getTransactionList());
+    });
+
   }
 
+  modifyGroup() {
+    this.dialog.open(AddModifyGroupComponent, {data: {friendList: this.userService.getterFriendsList(), group: this.group, title: 'Update Group', call: 'UPDATE'}, disableClose: true, autoFocus: true});
+  }
+  viewBalances() {
+    this.transactionService.fetchGroupBalance(this.group.groupId).subscribe(data => {
+      if (data['statusCode'] === 200) {
+        let report = data['object'] as Report[];
+        let res = [];
+        if (report.length > 0) {
+          report.forEach((rpt) => {
+            let user = this.group.userList.find((usr) => usr.userId === rpt.user);
+            let str: string;
+            str = user.name;
+            if (rpt.paid >= rpt.ownShare) {
+              str += ' gets back $' + `${rpt.paid - rpt.ownShare}`;
+            } else if (rpt.paid < rpt.ownShare) {
+              str += ' has to pay $' + `${rpt.ownShare - rpt.paid}`;
+            }
+            console.log(str);
+            res.push(str);
+          });
+          console.log('Final op');
+          console.log(res);
+          this.dialog.open(ViewGroupBalanceComponent, {data: {result: res}});
+        } else {
+          this.snackBar.open('No records to be displayed', 'Dismiss', {duration: 2000});
+        }
+      } else {
+        this.snackBar.open('View balance failed', 'Dismiss', {duration: 2000});
+      }
+    }, error => {
+      this.snackBar.open('Error while viewing balance', 'Dismiss', {duration: 2000});
+    });
+  }
 }
 
 export class ExampleDataSource extends DataSource<any> {

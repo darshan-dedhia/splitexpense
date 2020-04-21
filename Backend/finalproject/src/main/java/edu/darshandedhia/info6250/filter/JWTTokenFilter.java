@@ -48,7 +48,7 @@ public class JWTTokenFilter extends OncePerRequestFilter{
 		
 		request.setAttribute("userName", claims.getId()); 
 		request.setAttribute("userId", claims.getIssuer());
-		
+		System.out.println(request.getAttribute("userName"));
 		filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
 			writeErrorResponse(response);

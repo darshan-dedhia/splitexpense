@@ -3,12 +3,13 @@
     {{this.group.groupName}}
   </mat-card-title>
   <mat-card-content>
-    {{this.group.groupId}}
+    <mat-icon>group</mat-icon>&nbsp;{{this.group.userList.length}} group members
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary" type="button" (click)="addExpense()"><mat-icon>add_circle</mat-icon>&nbsp;Add Expense</button>
     <button mat-raised-button color="warn" type = "button" (click)="settleUp()"><mat-icon>done_all</mat-icon>&nbsp; Settle Up</button>
-    <button mat-raised-button class="button-green"><mat-icon>notifications_active</mat-icon> &nbsp;Remind</button>
+    <button mat-raised-button class="button-green" type="button" (click)="viewBalances()"><mat-icon>account_balance_wallet</mat-icon> &nbsp;View Balances</button>
+    <button mat-raised-button color="primary" (click)="modifyGroup()"><mat-icon>add_circle_outline</mat-icon> &nbsp;Modify Group/ Add member</button>
   </mat-card-actions>
 </mat-card>
 
@@ -88,22 +89,4 @@
   </mat-row>
 </mat-table>
 
-<mat-grid-list cols="5">
-  <mat-grid-tile [colspan]="4" class="table-card">
-
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="1">
-    <mat-card class="head-card">
-      <mat-card-title>
-        Stats:
-      </mat-card-title>
-      <mat-card-content>
-        {{this.group.groupId}}
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary">Click here!</button>
-      </mat-card-actions>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
 

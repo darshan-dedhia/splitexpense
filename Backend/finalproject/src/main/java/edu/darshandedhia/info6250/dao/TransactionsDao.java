@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import edu.darshandedhia.info6250.pojo.Transaction;
 import edu.darshandedhia.info6250.pojo.TransactionDetails;
 import edu.darshandedhia.info6250.pojo.User;
 import edu.darshandedhia.info6250.response.GroupResponse;
+import edu.darshandedhia.info6250.response.Reports;
 import edu.darshandedhia.info6250.response.Response;
 import edu.darshandedhia.info6250.response.ResponseObject;
 
@@ -48,6 +50,32 @@ public class TransactionsDao extends DAO{
 			he.printStackTrace();
 			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
 		} catch (Exception e){
+			e.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.internalServerError);
+		} finally {
+			close();
+		}
+	}
+	
+	public Response fetchFriendSums(int userId, int friendUserId) {
+		try {
+			begin();
+			String sqlQuery = "select 0 as id, tdd.USER_ID as user, SUM(tdd.OWN_SHARE) as ownShare, SUM(tdd.PAID) as paid, 0 as percentage, 0 as transaction from transaction_details tdd where tdd.TRANSACTION_ID in\r\n" + 
+					"(select t.TRANSACTION_ID from transactions t, transaction_details td1, transaction_details td2 \r\n" + 
+					"where td1.TRANSACTION_ID = td2.TRANSACTION_ID and t.PAYMENT_IND_GRP_ID = 0 \r\n" + 
+					"and t.TRANSACTION_ID = td1.TRANSACTION_ID and td1.USER_ID =  :userId\r\n" + 
+					"and td2.USER_ID = :friendUserId)\r\n" + 
+					"group by tdd.USER_ID";
+			NativeQuery<Reports> q = fetchSession().createNativeQuery(sqlQuery);
+			q.setParameter("userId", userId);
+			q.setParameter("friendUserId", friendUserId);
+			q.setResultTransformer(Transformers.aliasToBean(Reports.class));
+			List<Reports> td = (List<Reports>)q.list();
+			return new ResponseObject(StatusCode.success, Status.success, Status.success, td); 
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new Response(StatusCode.internalServerError, Status.error, Message.internalServerError);
 		} finally {
@@ -146,5 +174,72 @@ public class TransactionsDao extends DAO{
 			close();
 		}
 	}
+	
+	public Response fetchGroupSums(int userId, int groupId) {
+		try {
+			begin();
+			String sqlQuery = "select 0 as id, td.USER_ID as user, SUM(td.OWN_SHARE) as ownShare, SUM(td.PAID) as paid, 0 as percentage, 0 as transaction from transactions t, transaction_details td \r\n" + 
+					"where t.PAYMENT_IND_GRP_ID = :groupId\r\n" + 
+					"and td.TRANSACTION_ID = t.TRANSACTION_ID group by td.user_id";
+			NativeQuery<Reports> q = fetchSession().createNativeQuery(sqlQuery);
+			q.setParameter("groupId", groupId);
+			q.setResultTransformer(Transformers.aliasToBean(Reports.class));
+			List<Reports> td = (List<Reports>)q.list();
+			return new ResponseObject(StatusCode.success, Status.success, Status.success, td); 
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.internalServerError);
+		} finally {
+			close();
+		}
+	}
+	
+	public Response fetchSelfTotals(int userId) {
+		try {
+			begin();
+			String sqlQuery = "select 0 as id, td.USER_ID as user, ifnull(sum(ifnull(td.OWN_SHARE, 0)), 0) as ownShare, ifnull(SUM(ifnull(td.PAID, 0)), 0) as paid, 0 as percentage, 0 as transaction \r\n" + 
+					"from transaction_details td where td.USER_ID = :userId";
+			NativeQuery<Reports> q = fetchSession().createNativeQuery(sqlQuery);
+			q.setParameter("userId", userId);
+			q.setResultTransformer(Transformers.aliasToBean(Reports.class));
+			List<Reports> td = (List<Reports>)q.list();
+			Reports report = td.get(0);
+			return new ResponseObject(StatusCode.success, Status.success, Status.success, report); 
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.internalServerError);
+		} finally {
+			close();
+		}
+	}
+	
+	
+	public Response fetchCategorisedTotals(int userId) {
+		try {
+			begin();
+			String sqlQuery = "select ifnull(t.CATEGORY, 'UNCATEGORISED'), ifnull(sum(ifnull(td.own_share,0)),0) from transactions t, transaction_details td\r\n" + 
+					"where t.TRANSACTION_ID = td.TRANSACTION_ID and td.USER_ID = :userId\r\n" + 
+					"group by t.CATEGORY";
+			NativeQuery<Object> q = fetchSession().createNativeQuery(sqlQuery);
+			q.setParameter("userId", userId);
+			List<Object> td = q.list();
+			return new ResponseObject(StatusCode.success, Status.success, Status.success, td); 
+		} catch (HibernateException he) {
+			he.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.databaseExceptionOccured);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(StatusCode.internalServerError, Status.error, Message.internalServerError);
+		} finally {
+			close();
+		}
+	}
+	
 	
 }

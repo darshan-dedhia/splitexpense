@@ -51,14 +51,14 @@ public class User implements Serializable{
 	private String email;
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name="USER_FRIENDS", 
 	joinColumns=@JoinColumn(name="USER_ID"),
 	inverseJoinColumns = @JoinColumn(name="FRIEND_ID"))
 	private Collection<User> friends = new ArrayList<User>();
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "friends")
+	@ManyToMany(cascade = CascadeType.MERGE, mappedBy = "friends")
 	private Collection<User> friendsOf = new ArrayList<User>();
 	
 	@JsonIgnore
