@@ -14,7 +14,6 @@ Split Expense system is capable of making expense splitting process simpler wher
 ##### Categorized spend report
   - Keep track of categories you spend on
   
-# Installation
 
 # Tech Stack
 
@@ -29,7 +28,7 @@ Split Expense uses a number of technologies / framework:
 
 And of course Split Expense itself is open source with a [Repository] on GitHub.
 
-### Installation
+# Installation
 
 Split Expense requires [Java EE](https://www.java.com/en/), [Tomcat Server](http://tomcat.apache.org/).
 
