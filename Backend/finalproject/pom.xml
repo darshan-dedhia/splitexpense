@@ -251,7 +251,7 @@
 	  <dependency>
 	    <groupId>mysql</groupId>
 	    <artifactId>mysql-connector-java</artifactId>
-	    <version>6.0.5</version>
+	    <version>8.0.16</version>
 	  </dependency>
 	  <!-- Jackson API for JSON -->
 	  <dependency>
@@ -306,7 +306,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <version>8.0.16</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
