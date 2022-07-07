@@ -132,7 +132,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>4.0.1.RELEASE</version>
+            <version>5.2.21.RELEASE</version>
         </dependency>
         <!-- Srping Framework BOM -->
         <dependency>
@@ -326,7 +326,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>4.0.1.RELEASE</version>
+            <version>5.2.21.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
